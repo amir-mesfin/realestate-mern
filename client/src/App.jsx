@@ -1,13 +1,24 @@
 import { useState } from 'react'
 import './App.css'
-
+import {BrowserRouter,Route,Routes} from 'react-router-dom';
+import Home from './page/Home';
+import Signin from './page/Signin';
+import Signup from './page/Signup';
+import About from './page/About';
+import Profile from './page/Profile';
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
-      <h1 className='bg-yellow-300 mx-auto' > dcv</h1>
-    </>
+    <BrowserRouter>
+       <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/sign-in" element={<Signin />} />
+              <Route path="/sign-up" element={<Signup />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/profile" element={<Profile />} />
+       </Routes>
+    </BrowserRouter>
   )
 }
 
