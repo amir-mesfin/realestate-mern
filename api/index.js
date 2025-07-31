@@ -1,16 +1,23 @@
 import express from 'express';
+import connectDB from './config/db.js';
 
 const app = express();
 
-app.get('/',(req,res)=>{
-   console.log(abushe)
-})
-
-app.listen(3434,()=>{
-  
-  console.log("server is running");
+app.get('/', (req, res) => {
+  console.log("Hello Abushe");
+  res.send("Welcome!");
 });
 
-app.on("error",(err)=>{
-  throw new Error("the server is not working due to "+ err)
+connectDB()
+  .then(() => {
+    app.listen(3434, () => {
+      console.log("Server is running on port 3434");
+    });
+  })
+  .catch((err) => {
+    console.error("Failed to connect to DB:", err);
+  });
+
+app.on("error", (err) => {
+  console.error("Server error:", err);
 });
