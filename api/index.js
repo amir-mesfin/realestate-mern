@@ -1,17 +1,16 @@
 import express from 'express';
 import connectDB from './config/db.js';
-
+import userRouter from './routes/userRouter.js'
 const app = express();
+const PORT = process.env.PORT || 3000
 
-app.get('/', (req, res) => {
-  console.log("Hello Abushe");
-  res.send("Welcome!");
-});
+
+app.use("/api",userRouter);
 
 connectDB()
   .then(() => {
-    app.listen(3434, () => {
-      console.log("Server is running on port 3434");
+    app.listen(PORT, () => {
+      console.log("Server is running on port",PORT);
     });
   })
   .catch((err) => {
