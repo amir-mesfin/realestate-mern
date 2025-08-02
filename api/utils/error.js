@@ -1,4 +1,4 @@
-const ErrorHandler = (statusCode,message)=>{
+export const ErrorHandler = (statusCode,message)=>{
     const error = new Error(message);
     error.statusCode=statusCode;
     error.message=message;

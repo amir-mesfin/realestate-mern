@@ -7,6 +7,7 @@ import authRouter from './routes/auth.route.js'
 const app = express();
 const PORT = process.env.PORT || 3000
 
+// console.log('Loaded MONGO_URI:', process.env.MONGO_URI);
 
 connectDB()
   .then(() => {
