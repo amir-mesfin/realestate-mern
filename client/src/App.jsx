@@ -7,6 +7,7 @@ import Signup from './page/Signup';
 import About from './page/About';
 import Profile from './page/Profile';
 import Header from './component/Header';
+import PrivateRoute from './component/PrivateRoute';
 function App() {
   const [count, setCount] = useState(0)
 
@@ -18,7 +19,9 @@ function App() {
               <Route path="/sign-in" element={<Signin />} />
               <Route path="/sign-up" element={<Signup />} />
               <Route path="/about" element={<About />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route  element={<PrivateRoute />} >
+                   <Route path="/profile" element={<Profile />} />
+              </Route>
        </Routes>
     </BrowserRouter>
   )
