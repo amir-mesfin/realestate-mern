@@ -9,7 +9,7 @@ export default function Header() {
   // console.log(currentUser.avatar);
   const avatarURL = currentUser?.avatar?.includes("googleusercontent") && !currentUser.avatar.includes("=")
   ? currentUser.avatar + "=s96-c"
-  : currentUser?.avatar || "https://i.pravatar.cc/150?u=default";
+  : currentUser?.avatar || "https://www.w3schools.com/howto/img_avatar.png";
 
   return (
     <header className='bg-slate-200 shadow-md ' >
