@@ -1,20 +1,40 @@
-import React, {useRef} from 'react'
+import React, {useRef, useState} from 'react'
 import { useSelector } from 'react-redux'
 
 
 export default function Profile() {
+const [profileImage, setProfileIMage] = useState();
 const {currentUser} = useSelector((state)=>state.user);
 const avatarURL = currentUser?.avatar?.includes("googleusercontent") && !currentUser.avatar.includes("=")
   ? currentUser.avatar + "=s96-c"
-  : currentUser?.avatar || "https://www.w3schools.com/howto/img_avatar.png";
+  : currentUser?.avatar
 
   const fileRef = useRef(null)
+  const handleImageChange = async (e) =>{
+       const file = e.target.files[0];
+       // console.log(file);
+       if(!file) return ;
+       const formData = new FormData();
+       formData.append("file", file);
+       formData.append("upload_preset", "profile_preset");
+       try{
+           // upload to  Cloudinary
+       }catch(err){
+              console.log(error)
+       }
+  }
+
+//   de91zvrzu
+
   return (
     <div className='max-w-lg mx-auto'>
      <h1 className='text-3xl text-center font-semibold my-9'>Profile</h1>
      <form  className='flex flex-col gap-4'>
-      <input  ref={fileRef}
-      hidden
+      <input 
+      onChange={handleImageChange()}
+      accept='image/*' 
+       ref={fileRef}
+        hidden
        className='border-0 p-4 focus:outline-blue-300  rounded-lg bg-white '
       type="file" />
       <img  onClick={()=> fileRef.current.click()}
