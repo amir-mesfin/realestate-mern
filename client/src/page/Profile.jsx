@@ -3,11 +3,7 @@ import { useSelector } from 'react-redux';
 
 export default function Profile() {
   const [profileImage, setProfileImage] = useState("");
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: ''
-  });
+  const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -91,11 +87,11 @@ export default function Profile() {
       };
       
       console.log("Submitting:", updateData);
-      // const res = await fetch('/api/update-profile', {
-      //   method: 'PUT',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(updateData)
-      // });
+      const res = await fetch('/api/auth/update-profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updateData)
+      });
       
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
@@ -175,7 +171,7 @@ export default function Profile() {
             id="email"
             value={currentUser?.email}
             onChange={handleChange}
-            disabled={currentUser?.email} // Often emails shouldn't be changed
+       //      disabled={currentUser?.email} // Often emails shouldn't be changed
           />
         </div>
         
@@ -200,7 +196,13 @@ export default function Profile() {
         >
           {loading ? 'Updating...' : 'Update Profile'}
         </button>
+      
       </form>
+      <button 
+          className='bg-green-600 p-4 rounded-lg text-white font-semibold text-xl uppercase hover:opacity-95 disabled:opacity-80 w-120  mt-4'
+        >
+          create listing
+        </button>
       
       <div className='flex justify-between mt-5'>
         <button 
