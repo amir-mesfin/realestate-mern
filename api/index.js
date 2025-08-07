@@ -2,10 +2,13 @@ import express from 'express';
 import connectDB from './config/db.js';
 import userRouter from './routes/userRouter.js'
 import authRouter from './routes/auth.route.js'
-
+// import { verifyToken } from './utils/verrifyUser.js'
+import cookieParser from 'cookie-parser';
 
 const app = express();
 const PORT = process.env.PORT || 3000
+
+
 
 // console.log('Loaded MONGO_URI:', process.env.MONGO_URI);
 
@@ -18,9 +21,9 @@ connectDB()
   .catch((err) => {
     console.error("Failed to connect to DB:", err);
   });
-
+app.use(cookieParser());
 app.use(express.json());
-app.use("/api",userRouter);
+app.use("/api/user",userRouter);
 app.use("/api/auth",authRouter );
 
 app.use((err,req, res, next)=>{

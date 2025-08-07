@@ -88,14 +88,4 @@ export const google = async (req, res, next) => {
     };
     
 
-  export const updateProfile = async(req,res,next)=>{
-    try{
-       
-     const {avatar,email,username,password} = req.body;
-      console.log(req.body);  
-
-
-    }catch(err){
-      next(err);
-    }
-  }
+  
