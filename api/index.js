@@ -21,10 +21,16 @@ connectDB()
   .catch((err) => {
     console.error("Failed to connect to DB:", err);
   });
+
+
 app.use(cookieParser());
 app.use(express.json());
+
+
 app.use("/api/user",userRouter);
 app.use("/api/auth",authRouter );
+
+
 
 app.use((err,req, res, next)=>{
   const statusCode = err.statusCode || 500;
