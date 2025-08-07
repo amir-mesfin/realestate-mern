@@ -21,8 +21,8 @@ try{
       }
     },{new: true} )
 
-    const {password, ...reset} = updateUser ;
-    res.status(200).json(rest);
+    const {password, ...reset} = updateUser._doc ;
+    res.status(200).json(reset);
 }catch(err){
   next(err)
 }
