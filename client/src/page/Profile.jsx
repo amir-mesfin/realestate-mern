@@ -1,5 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
+import {updateUserStart,
+       updateSuccess,
+       updateFailure,} from '../redux/user/userSlice.js';
+import { useDispatch } from 'react-redux';
+
 
 export default function Profile() {
   const [profileImage, setProfileImage] = useState("");
@@ -9,7 +14,8 @@ export default function Profile() {
   const [success, setSuccess] = useState(null);
   
   const { currentUser } = useSelector((state) => state.user);
-  
+  // console.log(currentUser);
+  const dispatch = useDispatch();
   // Handle avatar URL with fallback
   const getAvatarUrl = () => {
     
@@ -76,8 +82,7 @@ export default function Profile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
+    dispatch(updateUserStart());
     
     try {
       // Here you would typically send to your backend
@@ -85,22 +90,26 @@ export default function Profile() {
         ...formData,
         ...(profileImage && { avatar: profileImage })
       };
+      // console.log(updateData);
       
-      console.log("Submitting:", updateData);
-      const res = await fetch('/api/auth/update-profile', {
-        method: 'PUT',
+      // console.log("Submitting:", updateData);
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: 'post',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updateData)
       });
-      
+      console.log(res);
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+       const data =  await res.json();
+       if(data.success === false){
+        dispatch(updateFailure(data.message));
+       }
+       console.log(data)
+       dispatch(updateSuccess(data));
       setSuccess('Profile updated successfully!');
+     
     } catch (err) {
-      console.error("Update error:", err);
-      setError(err.message || 'Failed to update profile');
-    } finally {
-      setLoading(false);
+      dispatch(updateFailure(err.message));
     }
   };
 
@@ -153,8 +162,9 @@ export default function Profile() {
           <input 
             type="text"
             placeholder='username'
-            className='border p-4 w-full focus:outline-blue-300 rounded-lg bg-white'
+            className='border-0 p-4 w-full focus:outline-blue-300 rounded-lg bg-white'
             id="username"
+            defaultValue={currentUser.username}
             value={formData.username}
             onChange={handleChange}
           />
@@ -166,10 +176,11 @@ export default function Profile() {
           </label>
           <input 
             type="email"
+            // value={currentUser.email}
             placeholder='email'
-            className='border p-4 w-full focus:outline-blue-300 rounded-lg bg-white'
+            className='border-0 p-4 w-full focus:outline-blue-300 rounded-lg bg-white'
             id="email"
-            value={currentUser?.email}
+            value={currentUser.email}
             onChange={handleChange}
        //      disabled={currentUser?.email} // Often emails shouldn't be changed
           />
@@ -182,7 +193,7 @@ export default function Profile() {
           <input 
             type="password"
             placeholder='password'
-            className='border p-4 w-full focus:outline-blue-300 rounded-lg bg-white'
+            className='border-0 p-4 w-full focus:outline-blue-300 rounded-lg bg-white'
             id="password"
             value={formData.password}
             onChange={handleChange}
@@ -218,6 +229,7 @@ export default function Profile() {
           Sign Out
         </button>
       </div>
+      <p>{error? error:''}</p>
     </div>
   );
 }
