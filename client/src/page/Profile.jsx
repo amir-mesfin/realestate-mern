@@ -18,13 +18,16 @@ export default function Profile() {
   const dispatch = useDispatch();
   // Handle avatar URL with fallback
   const getAvatarUrl = () => {
-    
+    if (!currentUser || !currentUser.avatar) {
+      return "https://www.w3schools.com/howto/img_avatar.png"; // fallback
+    }
+  
     if (currentUser.avatar.includes("googleusercontent")) {
-      return currentUser.avatar.includes("=") 
-        ? currentUser.avatar 
+      return currentUser.avatar.includes("=")
+        ? currentUser.avatar
         : currentUser.avatar + "=s96-c";
     }
-    
+  
     return currentUser.avatar;
   };
 
@@ -90,7 +93,7 @@ export default function Profile() {
         ...formData,
         ...(profileImage && { avatar: profileImage })
       };
-      // console.log(updateData);
+      console.log(updateData);
       
       // console.log("Submitting:", updateData);
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
@@ -103,10 +106,12 @@ export default function Profile() {
        const data =  await res.json();
        if(data.success === false){
         dispatch(updateFailure(data.message));
+       }else{
+        // console.log(data)
+        dispatch(updateSuccess(data));
+        setSuccess('Profile updated successfully!');
        }
-       console.log(data)
-       dispatch(updateSuccess(data));
-      setSuccess('Profile updated successfully!');
+       
      
     } catch (err) {
       dispatch(updateFailure(err.message));
@@ -120,7 +125,7 @@ export default function Profile() {
       {/* Success/Error Messages */}
       {error && (
         <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
-          {error}
+          {error.message}
         </div>
       )}
       {success && (
