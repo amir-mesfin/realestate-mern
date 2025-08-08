@@ -70,6 +70,7 @@ export default function Profile() {
       setSuccess('Profile image updated successfully!');
     } catch (err) {
       console.error("Upload error:", err);
+      setSuccess(null);
       setError(err.message || 'Failed to upload image');
     } finally {
       setLoading(false);
@@ -101,11 +102,12 @@ export default function Profile() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updateData)
       });
-      console.log(res);
+      // console.log(res);
       // Simulate API call
        const data =  await res.json();
        if(data.success === false){
         dispatch(updateFailure(data.message));
+        setSuccess(null);
        }else{
         // console.log(data)
         dispatch(updateSuccess(data));
@@ -115,6 +117,7 @@ export default function Profile() {
      
     } catch (err) {
       dispatch(updateFailure(err.message));
+      setSuccess(null);
     }
   };
 
