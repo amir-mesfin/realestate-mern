@@ -9,11 +9,11 @@ import { useDispatch } from 'react-redux';
 export default function Profile() {
   const [profileImage, setProfileImage] = useState("");
   const [formData, setFormData] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [load, setLoading] = useState(false);
+  const [err, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser,error,loading, } = useSelector((state) => state.user);
   // console.log(currentUser);
   const dispatch = useDispatch();
   // Handle avatar URL with fallback
@@ -93,7 +93,7 @@ export default function Profile() {
         ...formData,
         ...(profileImage && { avatar: profileImage })
       };
-      console.log(updateData);
+      // console.log(updateData);
       
       // console.log("Submitting:", updateData);
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
@@ -125,7 +125,7 @@ export default function Profile() {
       {/* Success/Error Messages */}
       {error && (
         <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
-          {error.message}
+          {error|| err}
         </div>
       )}
       {success && (
@@ -234,7 +234,6 @@ export default function Profile() {
           Sign Out
         </button>
       </div>
-      <p>{error? error:''}</p>
     </div>
   );
 }
