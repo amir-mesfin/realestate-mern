@@ -1,12 +1,16 @@
 import React, { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {updateUserStart,
-       updateSuccess,
-       updateFailure,} from '../redux/user/userSlice.js';
+        updateSuccess,
+        updateFailure,
+        deleteUSerFailure,
+       deleteUserSuccess,
+       deleteUserStart} from '../redux/user/userSlice.js';
 import { useDispatch } from 'react-redux';
-
+// import
 
 export default function Profile() {
+
   const [profileImage, setProfileImage] = useState("");
   const [formData, setFormData] = useState({});
   const [load, setLoading] = useState(false);
@@ -120,6 +124,25 @@ export default function Profile() {
       setSuccess(null);
     }
   };
+
+  const handleDeleteAccount = async()=> {
+    console.log("Account deletion requested");
+    try{
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`,{
+         method:'DELETE',
+      })
+      const data = await res.json();
+      if(data.success === false){
+        dispatch(deleteUSerFailure(data.message));
+        return;
+      }
+     dispatch(deleteUserSuccess(data));
+    }catch(err){
+     dispatch(deleteUSerFailure(err.message));
+    }
+  
+  }
 
   return (
     <div className='max-w-lg mx-auto p-4'>
@@ -242,12 +265,9 @@ export default function Profile() {
 }
 
 // Placeholder functions (implement these as needed)
-async function handleDeleteAccount() {
-  console.log("Account deletion requested");
-  // await fetch('/api/delete-account', { method: 'DELETE' });
-}
+
 
 async function handleSignOut() {
   console.log("Sign out requested");
-  // await fetch('/api/signout', { method: 'POST' });
+  // await fetch('/api/signout', { method: 'POST' }api);
 }

@@ -31,9 +31,11 @@ try{
 export const deleteUSer = async(req,res,next)=>{
  if(req.user.id !== req.params.id) return next(ErrorHandler(401,"can not delete account"));
  try{
-  await User.findByIdAndDelete(req.params.id)
+  await User.findByIdAndDelete(req.params.id);
+  res.clearCookies('token');
   res.status(200).json('user has been deleted');
-}catch(err) {
+  next(err);
+}catch(err){
   next(err);
 }
 }
