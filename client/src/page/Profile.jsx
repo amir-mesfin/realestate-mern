@@ -5,7 +5,10 @@ import {updateUserStart,
         updateFailure,
         deleteUSerFailure,
        deleteUserSuccess,
-       deleteUserStart} from '../redux/user/userSlice.js';
+       deleteUserStart,
+       signOutUserStart,
+       signOutUserSuccess,
+       signOutUSerFailure, } from '../redux/user/userSlice.js';
 import { useDispatch } from 'react-redux';
 // import
 
@@ -126,7 +129,7 @@ export default function Profile() {
   };
 
   const handleDeleteAccount = async()=> {
-    console.log("Account deletion requested");
+    // console.log("Account deletion requested");
     try{
       dispatch(deleteUserStart());
       const res = await fetch(`/api/user/delete/${currentUser._id}`,{
@@ -143,6 +146,22 @@ export default function Profile() {
     }
   
   }
+
+  const handleSignOut = async()=> {
+    // console.log("Sign out requested");
+   try{
+    dispatch(signOutUserStart());
+      const res = await fetch('api/auth/signout');
+      const data = await res.json();
+      if(data.success === false){
+        dispatch(signOutUSerFailure(data.message));
+        return;
+      }
+  dispatch(signOutUserSuccess(data));
+   }catch(err){
+    dispatch(signOutUSerFailure(err));
+    
+   }  }
 
   return (
     <div className='max-w-lg mx-auto p-4'>
@@ -267,7 +286,3 @@ export default function Profile() {
 // Placeholder functions (implement these as needed)
 
 
-async function handleSignOut() {
-  console.log("Sign out requested");
-  // await fetch('/api/signout', { method: 'POST' }api);
-}
