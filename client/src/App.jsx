@@ -8,6 +8,7 @@ import About from './page/About';
 import Profile from './page/Profile';
 import Header from './component/Header';
 import PrivateRoute from './component/PrivateRoute';
+import CreateListing from './page/CreateListing';
 function App() {
   const [count, setCount] = useState(0)
 
@@ -21,7 +22,17 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route  element={<PrivateRoute />} >
                    <Route path="/profile" element={<Profile />} />
+                   <Route path="/create-listing" element={<CreateListing />} />
+                   
               </Route>
+              {/* <Route
+                 path="/profile"
+                 element={
+                    <ProtectedRouteP msg="Please sign in to view your profile" redirect="/profile">
+                               <Profile />
+                    </ProtectedRouteP>
+                       }
+        /> */}
        </Routes>
     </BrowserRouter>
   )

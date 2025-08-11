@@ -10,6 +10,7 @@ import {updateUserStart,
        signOutUserSuccess,
        signOutUSerFailure, } from '../redux/user/userSlice.js';
 import { useDispatch } from 'react-redux';
+import {Link} from 'react-router-dom'
 // import
 
 export default function Profile() {
@@ -231,7 +232,7 @@ export default function Profile() {
             className='border-0 p-4 w-full focus:outline-blue-300 rounded-lg bg-white'
             id="email"
             value={currentUser.email}
-            onChange={handleChange}
+            disabled
        //      disabled={currentUser?.email} // Often emails shouldn't be changed
           />
         </div>
@@ -259,12 +260,14 @@ export default function Profile() {
         </button>
       
       </form>
+      <Link to="/create-listing">
       <button 
           className='bg-green-600 p-4 rounded-lg text-white font-semibold text-xl uppercase hover:opacity-95 disabled:opacity-80 w-120  mt-4'
         >
           create listing
         </button>
-      
+      </Link>
+
       <div className='flex justify-between mt-5'>
         <button 
           className='text-red-700 cursor-pointer hover:underline'
