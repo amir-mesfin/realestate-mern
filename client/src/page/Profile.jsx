@@ -27,7 +27,7 @@ export default function Profile() {
   // Handle avatar URL with fallback
   const getAvatarUrl = () => {
     if (!currentUser || !currentUser.avatar) {
-      return "https://www.w3schools.com/howto/img_avatar.png"; // fallback
+      return "https://www.w3schools.com/howto/img_avatar.png"; 
     }
   
     if (currentUser.avatar.includes("googleusercontent")) {

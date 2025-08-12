@@ -1,22 +1,31 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 export default function CreateListing() {
+       const [forData, setFormData] = useState({
+              imageUrl:[],
+       });
        const [files, setFile] = useState([]);
        const [err, SetErr]= useState(null);
-       console.log(files);
+       const [uploading, setUploading] = useState (false);
+       const[imageUploadError, setImageUPloadError] = useState(false);
+       // console.log(files);
        const handleImageSubmit = async(e) =>{
-           if(files.length === 0 && files.length>7) {
-              SetErr('Please upload at least 1 file and no more than 7');
+           setUploading(true);
+           if(files.length === 0 || forData.imageUrl.length > 7 || files.length>7) {
+              setImageUPloadError('Please upload at least 1 file and no more than 7');
+              setUploading(false);
               return;
            }
 
            for (const img of files) {
               if (!img.type.startsWith('image/')) {
-                SetErr('Please upload an image file');
+                     setImageUPloadError('Please upload an image file');
+                     setUploading(false);
                 return;
               }
               if (img.size > 5 * 1024 * 1024) {
-                SetErr('File size should be less than 5MB');
+                     setImageUPloadError('File size should be less than 5MB');
+                     setUploading(false);
                 return;
               }
             }
@@ -25,8 +34,8 @@ export default function CreateListing() {
            
            try{
               const uploadedUrls = [];
-              const formData = new FormData();
               for (const file of files) {
+                     const formData = new FormData();
                      formData.append("file", file);
                      formData.append("upload_preset", "profile_perset");
                      const res = await fetch(
@@ -37,15 +46,34 @@ export default function CreateListing() {
                             }
                      );
                      if (!res.ok) throw new Error('Image upload failed');
-                     const imageUrl = await res.json();
-                     uploadedUrls.push(imageUrl.secure_url);
-
+                     const imageUrls = await res.json();
+                     uploadedUrls.push(imageUrls.secure_url);
               }
-              console.log(uploadedUrls);
+              setFormData({
+                     ...forData,
+                     imageUrl: [...(forData.imageUrl || []), ...uploadedUrls]
+
+              });
+              // console.log(uploadedUrls);
+              // console.log(forData);
+              setFile([]);
+              setImageUPloadError(false);
+              setUploading(false);
            }catch(err){
-           console.log(err);
+              setImageUPloadError('image upload fail ')
+              setUploading(false);
            }
        }
+       React.useEffect(() => {
+              console.log('Updated imageUrl:', forData);
+            }, [forData.imageUrl]);
+
+       const handleRemovalImage = (index) =>{
+                     setFormData({
+                            ...forData,
+                            imageUrl: forData.imageUrl.filter((_, i) => i !== index)
+                     });
+       };
   return (
      <main className='p-4 max-w-5xl mx-auto'>
       <h1 className='text-3xl text-center font-semibold my-9'>Create Listing</h1>
@@ -145,19 +173,39 @@ export default function CreateListing() {
           </div>
           <div className='flex flex-col flex-1 gap-4'>
               <p className='font-semibold'>Image:
-                     <span className='font-normal text-gray-600  ml-2'>the first image will be the cover (max-6)</span>
+                     <span className='font-normal text-gray-600  ml-2'>the first image will be the cover (max-7)</span>
               </p>
+
               <div className='flex gap-5'>
                      <input type="file"
                             id='images'
                             accept='image/*' 
                             multiple
                             className='p-5 bg-white border-gray-300 rounded-lg w-full'
-                            onChange={(e) => setFile(Array.from(e.target.files))} />
-              <button className='p-3 text-green-700 border-green-700  rounded-lg uppercase  hover:shadow-2xl  disabled:opacity-80 bg-white'
+                            onChange={(e) => setFile(Array.from(e.target.files))}
+                            disabled={uploading} />
+              <button className='py-3 px-6 text-green-700 border-green-700  rounded-lg uppercase  hover:shadow-2xl  disabled:opacity-80 bg-white'
                type='button'
-               onClick={handleImageSubmit}>Upload</button>
+               disabled={uploading}
+               onClick={handleImageSubmit}>{ uploading? 'uploading...' : 'Uploading'}</button>
               </div>
+              <p className='text-red-700 text-xlsm'>{imageUploadError && imageUploadError }</p>
+
+              {
+                     forData.imageUrl.length > 0  &&  forData.imageUrl.map((url, index) => (
+                            
+                            <div className=' flex justify-between  rounded-lg border-0 items-center  p-3 bg-gray-200' key={index}>
+                                    <img src={url}
+                                          alt='Listing Image'
+                                          className='w-22 h-22 object-contain rounded-lg ' />
+                                  <button  className='text-red-700 rounded-lg hover:opacity-80  hover:bg-slate-300 p-3'
+                                   type='button'
+                                  onClick={() => handleRemovalImage(index)}>Delete</button>
+                            </div>
+                      
+                     ))
+              }
+
           <button className='p-4 mt-5 bg-slate-700 text-white rounded-lg  uppercase hover:opacity-95 disabled:-75 '>Create List </button>
 
           </div>
