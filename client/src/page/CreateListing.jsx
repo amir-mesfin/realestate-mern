@@ -1,6 +1,51 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 export default function CreateListing() {
+       const [files, setFile] = useState([]);
+       const [err, SetErr]= useState(null);
+       console.log(files);
+       const handleImageSubmit = async(e) =>{
+           if(files.length === 0 && files.length>7) {
+              SetErr('Please upload at least 1 file and no more than 7');
+              return;
+           }
+
+           for (const img of files) {
+              if (!img.type.startsWith('image/')) {
+                SetErr('Please upload an image file');
+                return;
+              }
+              if (img.size > 5 * 1024 * 1024) {
+                SetErr('File size should be less than 5MB');
+                return;
+              }
+            }
+           
+             
+           
+           try{
+              const uploadedUrls = [];
+              const formData = new FormData();
+              for (const file of files) {
+                     formData.append("file", file);
+                     formData.append("upload_preset", "profile_perset");
+                     const res = await fetch(
+                            "https://api.cloudinary.com/v1_1/de91zvrzu/image/upload",
+                            {
+                                    method: "POST", 
+                                    body: formData 
+                            }
+                     );
+                     if (!res.ok) throw new Error('Image upload failed');
+                     const imageUrl = await res.json();
+                     uploadedUrls.push(imageUrl.secure_url);
+
+              }
+              console.log(uploadedUrls);
+           }catch(err){
+           console.log(err);
+           }
+       }
   return (
      <main className='p-4 max-w-5xl mx-auto'>
       <h1 className='text-3xl text-center font-semibold my-9'>Create Listing</h1>
@@ -107,8 +152,11 @@ export default function CreateListing() {
                             id='images'
                             accept='image/*' 
                             multiple
-                            className='p-5 bg-white border-gray-300 rounded-lg w-full'/>
-              <button className='p-3 text-green-700 border-green-700  rounded-lg uppercase  hover:shadow-2xl  disabled:opacity-80 bg-white'>Upload</button>
+                            className='p-5 bg-white border-gray-300 rounded-lg w-full'
+                            onChange={(e) => setFile(Array.from(e.target.files))} />
+              <button className='p-3 text-green-700 border-green-700  rounded-lg uppercase  hover:shadow-2xl  disabled:opacity-80 bg-white'
+               type='button'
+               onClick={handleImageSubmit}>Upload</button>
               </div>
           <button className='p-4 mt-5 bg-slate-700 text-white rounded-lg  uppercase hover:opacity-95 disabled:-75 '>Create List </button>
 
