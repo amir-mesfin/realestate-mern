@@ -10,7 +10,7 @@ export const updateProfile = async(req,res,next)=>{
 if(req.user.id !== req.params.id) return next(ErrorHandler(403,'forbidden to update'));
 try{
     if(req.body.password){
-      req.body.password = await bcryptjs.hashSync(req.body.password,10);
+      req.body.password = bcryptjs.hashSync(req.body.password, 10);
     }
     const updateUser =  await User.findByIdAndUpdate(req.params.id,{
       $set:{
@@ -32,9 +32,8 @@ export const deleteUSer = async(req,res,next)=>{
  if(req.user.id !== req.params.id) return next(ErrorHandler(401,"can not delete account"));
  try{
   await User.findByIdAndDelete(req.params.id);
-  res.clearCookies('token');
+  res.clearCookie('token', { httpOnly: true });
   res.status(200).json('user has been deleted');
-  next(err);
 }catch(err){
   next(err);
 }

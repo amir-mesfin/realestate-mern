@@ -4,8 +4,6 @@ import userRouter from './routes/userRouter.js'
 import authRouter from './routes/auth.route.js'
 import listingRouter from './routes/listing.route.js'
 import cookieParser from 'cookie-parser';
-
-
 const app = express();
 const PORT = process.env.PORT || 3000
 
