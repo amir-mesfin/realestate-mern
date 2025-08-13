@@ -20,7 +20,9 @@ export default function Profile() {
   const [load, setLoading] = useState(false);
   const [err, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  
+  const [ShowListingError , setShowListingError] = useState(null);
+  const [userListing, setUserListing] = useState([]);
+
   const { currentUser,error,loading, } = useSelector((state) => state.user);
   // console.log(currentUser);
   const dispatch = useDispatch();
@@ -164,6 +166,23 @@ export default function Profile() {
     
    }  }
 
+   const handleShowList = async() =>{
+      try{
+        setShowListingError(null);
+          const res = await fetch(`/api/user/listings/${currentUser._id}`);
+        const data = await res.json();
+        if(data.success === false){
+          setShowListingError(data.message);
+          return;
+        }
+        console.log(data);
+        setUserListing(data);
+
+      }catch(error){
+        setShowListingError(error);
+      }
+   }
+
   return (
     <div className='max-w-lg mx-auto p-4'>
       <h1 className='text-3xl text-center font-semibold my-9'>Profile</h1>
@@ -282,6 +301,24 @@ export default function Profile() {
           Sign Out
         </button>
       </div>
+       <button className='text-center items-center w-full mt-6 text-green-700 '
+              onClick={handleShowList}>Show Listings</button>
+
+              <p className='text-sm text-red-700  w-full'>{ShowListingError && ShowListingError}</p>
+
+        {userListing && userListing.length > 0 &&
+          (
+            userListing.map((list) =>{
+              <div key={list._id}
+                   className=''
+                   > 
+                   <Link to={`/listing/${list._id}`}>
+                   <img src={list.imageUrl[0]} alt="listing ate" />
+                   </Link>
+              </div>
+            })
+          )  
+        }
     </div>
   );
 }
