@@ -22,7 +22,7 @@ export default function Profile() {
   const [success, setSuccess] = useState(null);
   const [ShowListingError , setShowListingError] = useState(null);
   const [userListing, setUserListing] = useState([]);
-
+  const [showListing, setShowListing] = useState(false);
   const { currentUser,error,loading, } = useSelector((state) => state.user);
   // console.log(currentUser);
   const dispatch = useDispatch();
@@ -177,10 +177,12 @@ export default function Profile() {
         }
         console.log(data);
         setUserListing(data);
-
+          
       }catch(error){
         setShowListingError(error);
       }
+       setShowListing(true);
+
    }
    React.useEffect(()=>{
       console.log(userListing);
@@ -304,16 +306,18 @@ export default function Profile() {
           Sign Out
         </button>
       </div>
-       <button className='text-center items-center w-full mt-6 text-green-700 '
-              onClick={handleShowList}>Show Listings</button>
-
+      {
+         !showListing && <button className='text-center items-center w-full mt-6 text-green-700 '
+         onClick={handleShowList}>Show Listings</button>
+      }
+       
               <p className='text-sm text-red-700  w-full'>{ShowListingError && ShowListingError}</p>
 
         {userListing && userListing.length > 0 &&
 
           (
             <div className= 'flex flex-col '>
-              <h1 className=' text-center  my-7 text-2xl font-semibold '>Tour Listing </h1>
+              <h1 className=' text-center  my-7 text-2xl font-semibold '>Your Listing </h1>
               {
                     userListing.map((list) =>(
                       <div key={list._id}
@@ -325,12 +329,15 @@ export default function Profile() {
                            
         
                            </Link>
-                           <Link to={`/listing/${list._id}`}
-                                 classname='flex-1 '>
-                                <p className=' text-slate-700    hover:underline truncate font-semibold'>
-                                {list.name}
+                           <Link
+                                to={`/listing/${list._id}`}
+                                className="flex-1"
+                              >
+                                <p className="text-slate-700 hover:underline truncate font-semibold overflow-hidden whitespace-nowrap max-w-[200px]">
+                                  {list.name}
                                 </p>
-                           </Link>
+                              </Link>
+
                            <div className='flex flex-col gap-4 '>
                                  <button className='text-red-700  p-2  hover:bg-amber-400 rounded-2xl uppercase'>delete</button>
                                  <button className='text-green-400 p-2  hover:bg-amber-400 rounded-2xl uppercase'>edit</button>
