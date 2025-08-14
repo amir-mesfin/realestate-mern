@@ -182,6 +182,9 @@ export default function Profile() {
         setShowListingError(error);
       }
    }
+   React.useEffect(()=>{
+      console.log(userListing);
+   },[userListing]);
 
   return (
     <div className='max-w-lg mx-auto p-4'>
@@ -307,16 +310,37 @@ export default function Profile() {
               <p className='text-sm text-red-700  w-full'>{ShowListingError && ShowListingError}</p>
 
         {userListing && userListing.length > 0 &&
+
           (
-            userListing.map((list) =>{
-              <div key={list._id}
-                   className=''
-                   > 
-                   <Link to={`/listing/${list._id}`}>
-                   <img src={list.imageUrl[0]} alt="listing ate" />
-                   </Link>
-              </div>
-            })
+            <div className= 'flex flex-col '>
+              <h1 className=' text-center  my-7 text-2xl font-semibold '>Tour Listing </h1>
+              {
+                    userListing.map((list) =>(
+                      <div key={list._id}
+                           className=' border-amber-300 bg-amber-50 rounded-lg  p-5 flex justify-between items-center my-5 gap-7'
+                           > 
+                           <Link to={`/listing/${list._id}`}>
+                           <img className='w-18 h-18 object-contain rounded-xl '
+                              src={list.imageUrl[0]} alt="listing ate" />
+                           
+        
+                           </Link>
+                           <Link to={`/listing/${list._id}`}
+                                 classname='flex-1 '>
+                                <p className=' text-slate-700    hover:underline truncate font-semibold'>
+                                {list.name}
+                                </p>
+                           </Link>
+                           <div className='flex flex-col gap-4 '>
+                                 <button className='text-red-700  p-2  hover:bg-amber-400 rounded-2xl uppercase'>delete</button>
+                                 <button className='text-green-400 p-2  hover:bg-amber-400 rounded-2xl uppercase'>edit</button>
+                           </div>
+        
+                      </div>
+                    ))
+              }
+            </div>
+           
           )  
         }
     </div>
