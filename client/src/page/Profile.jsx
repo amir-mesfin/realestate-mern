@@ -23,6 +23,7 @@ export default function Profile() {
   const [ShowListingError , setShowListingError] = useState(null);
   const [userListing, setUserListing] = useState([]);
   const [showListing, setShowListing] = useState(false);
+  const [listingDeleteError, setListingDeleteError] = useState(null);
   const { currentUser,error,loading, } = useSelector((state) => state.user);
   // console.log(currentUser);
   const dispatch = useDispatch();
@@ -188,6 +189,23 @@ export default function Profile() {
       console.log(userListing);
    },[userListing]);
 
+   const handleListingDelete = async(listingId) =>{
+    try{
+          const res = await fetch(`/api/listing/delete/${listingId}`,{
+            method: 'DELETE',
+          });
+          const data = await res.json();
+          if(data.success === false){
+            setListingDeleteError(data.message);
+           return; 
+          }
+          setUserListing((prev) => prev.filter((listing) => listing._id !== listingId));
+
+    }catch(err){
+      setListingDeleteError(err.message)
+    }
+      
+   }
   return (
     <div className='max-w-lg mx-auto p-4'>
       <h1 className='text-3xl text-center font-semibold my-9'>Profile</h1>
@@ -339,13 +357,16 @@ export default function Profile() {
                               </Link>
 
                            <div className='flex flex-col gap-4 '>
-                                 <button className='text-red-700  p-2  hover:bg-amber-400 rounded-2xl uppercase'>delete</button>
+                                 <button className='text-red-700  p-2  hover:bg-amber-400 rounded-2xl uppercase'
+                                  onClick={() => handleListingDelete(list._id)}>delete</button>
                                  <button className='text-green-400 p-2  hover:bg-amber-400 rounded-2xl uppercase'>edit</button>
                            </div>
-        
+               
                       </div>
+                      
                     ))
               }
+                <p className='text-sm text-red-800'>{listingDeleteError && listingDeleteError}</p>
             </div>
            
           )  
