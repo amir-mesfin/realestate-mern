@@ -29,3 +29,25 @@ export const deleteListing =  async(req,res,next)=>{
       next(err);
    }
 }
+
+   
+   export const updateListing = async (req, res, next) => {
+      const listing = await findByID(req.params.id);
+
+      if(!listing) return next(ErrorHandler(404,'listing not Found'));
+
+      if(req.params.id !== listing._id.toString()){
+         return next(ErrorHandler(401 , 'You are not authorized to delete this listing'));
+      }
+      try{
+          const updateListing  = await Listing.findByIdAndUpdate( 
+            req.params.id,
+            req.body,
+           {new: true}
+         );
+         res.status(200).json(updateListing);
+            
+      }catch(err){
+         next(err);
+      }
+   }
