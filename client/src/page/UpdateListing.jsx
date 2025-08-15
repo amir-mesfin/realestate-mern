@@ -1,0 +1,353 @@
+import React, { useState, useEffect, useRef } from 'react'
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+export default function UpdateListing() {
+       const [forData, setFormData] = useState({
+              name: "",
+              description: "",
+              address: "",
+              regularPrice: 0,
+              discountPrice: 0,
+              bathrooms: 1,
+              bedrooms: 1,
+              furnished: false,
+              parking: false,
+              type: "rent",       
+              offer: false,
+              imageUrl:[],
+              userRef:''
+       });
+       const [files, setFile] = useState([]);
+       const [err, SetErr]= useState(null);
+       const [uploading, setUploading] = useState (false);
+       const [loading, setLoading] = useState(false);
+       const[imageUploadError, setImageUPloadError] = useState(false);
+       const{currentUser} = useSelector((state)=>state.user);
+       const navigate = useNavigate();
+       // console.log(files);
+       const handleImageSubmit = async(e) =>{
+           setUploading(true);
+           if(
+              files.length === 0 || 
+              forData.imageUrl.length > 7 || 
+              files.length>7
+            ) {
+              setImageUPloadError('Please upload at least 1 file and no more than 7');
+              setUploading(false);
+              return;
+           }
+
+           for (const img of files) {
+              if (!img.type.startsWith('image/')) {
+                     setImageUPloadError('Please upload an image file');
+                     setUploading(false);
+                return;
+              }
+              if (img.size > 5 * 1024 * 1024) {
+                     setImageUPloadError('File size should be less than 5MB');
+                     setUploading(false);
+                return;
+              }
+            }
+           
+             
+           
+           try{
+              const uploadedUrls = [];
+              for (const file of files) {
+                     const formData = new FormData();
+                     formData.append("file", file);
+                     formData.append("upload_preset", "profile_perset");
+                     const res = await fetch(
+                            "https://api.cloudinary.com/v1_1/de91zvrzu/image/upload",
+                            {
+                                    method: "POST", 
+                                    body: formData 
+                            }
+                     );
+                     if (!res.ok) throw new Error('Image upload failed');
+                     const imageUrls = await res.json();
+                     uploadedUrls.push(imageUrls.secure_url);
+              }
+              setFormData({
+                     ...forData,
+                     imageUrl: [...(forData.imageUrl || []), ...uploadedUrls]
+
+              });
+              // console.log(uploadedUrls);
+              // console.log(forData);
+              setFile([]);
+              setImageUPloadError(false);
+              setUploading(false);
+           }catch(err){
+              setImageUPloadError('image upload fail ')
+              setUploading(false);
+           }
+       }
+       // React.useEffect(() => {
+       //        console.log('Updated imageUrl:', forData);
+       //      }, [forData]);
+
+       const handleRemovalImage = (index) =>{
+                     setFormData({
+                            ...forData,
+                            imageUrl: forData.imageUrl.filter((_, i) => i !== index)
+                     });
+       };
+
+       const handleChange = (e)=>{
+
+              if( 
+                     e.target.id === 'sale' || 
+                     e.target.id === 'rent'
+              ){
+                     setFormData({
+                            ...forData,
+                            type:e.target.id
+                     });
+              }
+              if(
+                     e.target.id === 'parking' || 
+                     e.target.id === 'furnished' || 
+                     e.target.id ==='offer'
+               ){
+                     setFormData({
+                            ...forData,
+                            [e.target.id]:e.target.checked
+                     });
+              }
+              if(
+                     e.target.type === 'number' || 
+                     e.target.type === 'text' || 
+                     e.target.type === 'textarea'){
+                     setFormData({
+                            ...forData,
+                            [e.target.id]:e.target.value
+                     });
+              }
+              
+       };
+
+     const handleSubmit = async (e) => {
+         e.preventDefault();
+         
+         try{
+              if(forData.imageUrl < 1) return  SetErr('you must upload at least one image')
+              if(+forData.regularPrice < +forData.discountPrice) return SetErr('Discount price must be lower than regular price')
+              setLoading(true);
+               SetErr(false);
+              const res = await fetch('/api/listing/create',{
+                     method:'POST',
+                     headers:{
+                           'Content-Type':'application/json'
+                     },
+                     credentials: 'include',
+                     body: JSON.stringify({
+                            ...forData,
+                            userRef:currentUser._id}), 
+               });
+               const data = await res.json();
+               console.log(data);
+               setLoading(false);
+               SetErr(false);
+               if(data.success === false){
+               SetErr(data.message);
+              }
+              navigate(`listing/${data._id}`)
+         } catch(err){
+             setLoading(false);
+             SetErr(err.message);
+         }
+     }
+  return (
+     <main className='p-4 max-w-5xl mx-auto'>
+      <h1 className='text-3xl text-center font-semibold my-9'>Update Listing</h1>
+      <form  onSubmit={handleSubmit} className='flex flex-col sm:flex-row gap-8' >
+          <div className='flex flex-col gap-4 flex-1'>
+            <input type="text"
+                   placeholder='name' 
+                   className='border-0 p-4  focus:outline-blue-300 rounded-lg bg-white'  id="name"
+                   maxLength={67}
+                   minLength={5}
+                   required 
+                   onChange={handleChange}
+                   value={forData.name}/>
+            <textarea type="textarea"
+                   placeholder='Description' 
+                   className='border-0 p-4  focus:outline-blue-300 rounded-lg bg-white' 
+                    id="description"
+                   required 
+                   onChange={handleChange}
+                   value={forData.description}/>
+            <input type="text"
+                   placeholder='Address' 
+                   className='border-0 p-4  focus:outline-blue-300 rounded-lg bg-white'  id="address"
+                   required 
+                   onChange={handleChange}
+                   value={forData.address}/>
+
+            <div className='flex gap-7 flex-wrap'>
+
+                 <div className='flex gap-2'>
+                      <input type="checkbox"
+                              id='sale'
+                              className='w-10'
+                              onChange={handleChange}
+                              checked={forData.type === 'sale'} />
+                     <span className='font-semibold'>Sell</span>
+                 </div>
+
+                 <div className='flex gap-2'>
+                      <input type="checkbox"
+                              id='rent'
+                              className='w-10'
+                              checked={forData.type === 'rent'}
+                              onChange={handleChange}
+                      />
+                     <span className='font-semibold'>Rent</span>
+                 </div>
+
+                 <div className='flex gap-2'>
+                      <input type="checkbox"
+                              id='parking'
+                              className='w-10' 
+                              checked={forData.parking}
+                              onChange={handleChange}
+                               />
+                     <span className='font-semibold'>Parking Spot</span>
+                 </div>
+
+                 <div className='flex gap-2'>
+                      <input type="checkbox"
+                              id='furnished'
+                              className='w-10'
+                              checked={forData.furnished}
+                              onChange={handleChange}
+                      />
+                     <span className='font-semibold'>Furnished</span>
+                 </div>
+
+                 <div className='flex gap-2'>
+                      <input type="checkbox"
+                              id='offer'
+                              className='w-10'
+                              checked={forData.offer}
+                              onChange={handleChange}
+                      />
+                     <span className='font-semibold'>Offer</span>
+                 </div>
+
+            </div>
+
+
+          <div className=' flex flex-wrap gap-7'>
+
+               <div className=' flex items-center gap-2'>
+                     <input type="number"
+                            id='bedrooms'
+                            min='1'
+                            max='100000000'
+                            required 
+                            className='p-4 border-gray-300 rounded-lg bg-white focus:outline-blue-300 w-23'
+                            value={forData.bedrooms}
+                            onChange={handleChange}
+                     />
+                     <p className='font-semibold '>Beds</p>
+               </div>
+
+               <div className=' flex items-center gap-2'>
+                     <input type="number"
+                            id='bathrooms'
+                            min='1'
+                            max='1000000'
+                            required 
+                            className='p-4 border-gray-300 rounded-lg bg-white focus:outline-blue-300 w-23'
+                            value={forData.bathrooms}
+                            onChange={handleChange}
+                     />
+                     <p className='font-semibold '>Baths</p>
+               </div>
+
+               <div className=' flex items-center gap-2'>
+                     <input type="number"
+                            id='regularPrice'
+                            required 
+                            min='0'
+                            max='10000000000000000000000000000000000000000000000000000000000'
+                            className='p-4 w-45 border-gray-300 rounded-lg bg-white focus:outline-blue-300 '
+                            onChange={handleChange}
+                            value={forData.regularPrice}/>
+                     <div className='flex flex-col items-center'>
+                     <p className='font-semibold '>Regular Price</p>
+                     <span className='text-xs'>($ / Month)</span>
+                     </div>
+                    
+               </div>
+               {forData.offer && (
+                       <div className=' flex items-center gap-2'>
+                       <input type="number"
+                              id='discountPrice'
+                              min='0'
+                              max='10000000000000000000000000000000000000000000000000000000000'
+                              required 
+                              className='p-4 w-45 border-gray-300 rounded-lg bg-white focus:outline-blue-300 '
+                              onChange={handleChange}
+                              value={forData.discountPrice}/>
+                       <div className=' flex flex-col items-center'>
+                       <p className='font-semibold '>Discounted Price</p>
+                       <span className='text-xs'>($ / Month)</span>
+  
+                       </div>
+                 </div>
+               )}
+               
+          </div>
+
+          </div>
+          <div className='flex flex-col flex-1 gap-4'>
+              <p className='font-semibold'>Image:
+                     <span className='font-normal text-gray-600  ml-2'>the first image will be the cover (max-7)</span>
+              </p>
+
+              <div className='flex gap-5'>
+                     <input type="file"
+                            id='images'
+                            accept='image/*' 
+                            multiple
+                            className='p-5 bg-white border-gray-300 rounded-lg w-full'
+                            onChange={(e) => setFile(Array.from(e.target.files))}
+                            disabled={uploading} />
+              <button className='py-3 px-6 text-green-700 border-green-700  rounded-lg uppercase  hover:shadow-2xl  disabled:opacity-80 bg-white'
+               type='button'
+               disabled={uploading}
+               onClick={handleImageSubmit}>{ uploading? 'uploading...' : 'Uploading'}</button>
+              </div>
+              <p className='text-red-700 text-xlsm'>{imageUploadError && imageUploadError }</p>
+
+              {
+                     forData.imageUrl.length > 0  &&  forData.imageUrl.map((url, index) => (
+                            
+                            <div className=' flex justify-between  rounded-lg border-0 items-center  p-3 bg-gray-200' key={index}>
+                                    <img src={url}
+                                          alt='Listing Image'
+                                          className='w-22 h-22 object-contain rounded-lg ' />
+                                  <button  className='text-red-700 rounded-lg hover:opacity-80  hover:bg-slate-300 p-3'
+                                   type='button'
+                                  onClick={() => handleRemovalImage(index)}>Delete</button>
+                            </div>
+                      
+                     ))
+              }
+
+          <button className='p-4 mt-5 bg-slate-700 text-white rounded-lg  uppercase hover:opacity-95 disabled:opacity-75 '
+                  disabled={loading || uploading }>
+             {loading? 'Create ....': 'create list' }
+           </button>
+         {
+              err &&  <p className='text-red-700 text-sm'>  {err} </p>
+         }
+          </div>
+      </form>
+     </main>
+  )
+}

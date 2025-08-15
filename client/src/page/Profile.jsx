@@ -359,7 +359,10 @@ export default function Profile() {
                            <div className='flex flex-col gap-4 '>
                                  <button className='text-red-700  p-2  hover:bg-amber-400 rounded-2xl uppercase'
                                   onClick={() => handleListingDelete(list._id)}>delete</button>
-                                 <button className='text-green-400 p-2  hover:bg-amber-400 rounded-2xl uppercase'>edit</button>
+                                 <Link to={`/update-listing/${list._id}`}> 
+                                     <button className='text-green-400 p-2  hover:bg-amber-400 rounded-2xl uppercase'>edit</button>
+                                  </Link>
+                                
                            </div>
                
                       </div>
