@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 export default function UpdateListing() {
        const [forData, setFormData] = useState({
               name: "",
@@ -24,6 +24,22 @@ export default function UpdateListing() {
        const[imageUploadError, setImageUPloadError] = useState(false);
        const{currentUser} = useSelector((state)=>state.user);
        const navigate = useNavigate();
+       const useParam = useParams()
+       const listingId = useParam.listingId; 
+
+       useEffect(()=>{
+              const fetchListing = async () =>{
+              //     console.log(listingId);
+              const res = await fetch(`/api/listing/getList/${listingId}`);
+              const data = await res.json();
+              if(data.success === false){
+                     console.log(data);
+                     return;
+              }
+              setFormData(data);
+              }
+              fetchListing()
+       },[])
        // console.log(files);
        const handleImageSubmit = async(e) =>{
            setUploading(true);
@@ -136,7 +152,9 @@ export default function UpdateListing() {
               if(+forData.regularPrice < +forData.discountPrice) return SetErr('Discount price must be lower than regular price')
               setLoading(true);
                SetErr(false);
-              const res = await fetch('/api/listing/create',{
+             
+
+              const res = await fetch(`/api/listing/update/${listingId}`,{
                      method:'POST',
                      headers:{
                            'Content-Type':'application/json'
@@ -331,7 +349,7 @@ export default function UpdateListing() {
                                     <img src={url}
                                           alt='Listing Image'
                                           className='w-22 h-22 object-contain rounded-lg ' />
-                                  <button  className='text-red-700 rounded-lg hover:opacity-80  hover:bg-slate-300 p-3'
+                                  <button  className='text-red-700 rounded-lg hover:opacity-80  hover:bg-slate-300 py-3 px-10'
                                    type='button'
                                   onClick={() => handleRemovalImage(index)}>Delete</button>
                             </div>
@@ -341,7 +359,7 @@ export default function UpdateListing() {
 
           <button className='p-4 mt-5 bg-slate-700 text-white rounded-lg  uppercase hover:opacity-95 disabled:opacity-75 '
                   disabled={loading || uploading }>
-             {loading? 'Create ....': 'create list' }
+             {loading? 'Update ....': 'update list' }
            </button>
          {
               err &&  <p className='text-red-700 text-sm'>  {err} </p>

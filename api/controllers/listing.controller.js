@@ -33,7 +33,7 @@ export const deleteListing =  async(req,res,next)=>{
 
    
    export const updateListing = async (req, res, next) => {
-      const listing = await findByID(req.params.id);
+      const listing = await Listing.findById(req.params.id);
 
       if(!listing) return next(ErrorHandler(404,'listing not Found'));
 
