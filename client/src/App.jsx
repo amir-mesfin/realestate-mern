@@ -10,6 +10,7 @@ import Header from './component/Header';
 import PrivateRoute from './component/PrivateRoute';
 import CreateListing from './page/CreateListing';
 import UpdateListing from './page/UpdateListing';
+import Listing from './page/Listing';
 function App() {
   const [count, setCount] = useState(0)
 
@@ -19,6 +20,7 @@ function App() {
        <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/sign-in" element={<Signin />} />
+              <Route path="/listing/:listingId" element={<Listing />} />
               <Route path="/sign-up" element={<Signup />} />
               <Route path="/about" element={<About />} />
               <Route  element={<PrivateRoute />} >
