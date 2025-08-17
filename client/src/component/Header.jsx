@@ -13,8 +13,10 @@ export default function Header() {
 
   return (
     <header className='bg-slate-200 shadow-md ' >
-       <div className='flex  justify-between items-center max-w-6xl mx-auto p-3'>
-        <Link to="/">
+       <div className='flex justify-between items-center max-w-6xl mx-auto p-3'>
+        <Link to="/" className='md:flex'>
+        <img src='http://res.cloudinary.com/de91zvrzu/image/upload/v1755390858/fmbw5k0za7akjpwavc1k.ico' alt=""  
+         className='w-20 h-10 rounded-xl mr-5'/>
         <h1 className='font-bold text-sm sm:text-xl md:text-2xl flex flex-wrap'>
           <span className='text-slate-500'>Abushe</span>
           <span className='text-slate-700 '>Estate</span>
@@ -24,7 +26,7 @@ export default function Header() {
           <input type="text" placeholder='Search....' className='bg-transparent focus:outline-none w-24 sm:w-64 lg:w-95' />
           <FaSearch className="text-slate-500" />
         </form>
-        <ul className='flex justify-between space-x-4 ' >
+        <ul className='flex justify-between space-x-6  items-center' >
           <Link to="/home">
           <li className='hidden sm:inline text-slate-700 hover:underline'>Home</li>
           </Link>
@@ -36,7 +38,7 @@ export default function Header() {
           { currentUser? (
              <img src={avatarURL}
              alt="profile"
-             className="w-8 h-8 rounded-full object-cover" />
+             className="w-10 h-10 rounded-full object-cover ml-8" />
           ):
           <ul>
               <li className='text-slate-700 hover:underline'> Sign In</li>
