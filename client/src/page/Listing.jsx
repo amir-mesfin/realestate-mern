@@ -10,8 +10,11 @@ import { MdLocationOn } from 'react-icons/md';
 import { BsCurrencyDollar, BsShareFill } from 'react-icons/bs';
 import { IoIosResize } from 'react-icons/io';
 import Contact from '../component/Contact';
+import { useSelector } from 'react-redux';
+
 
 export default function Listing() {
+  const {currentUser} = useSelector((state)=> state.user);
   const param = useParams();
   SwiperCore.use([Navigation, Pagination, Autoplay]);
   const [listing, setListing] = useState(null);
@@ -20,7 +23,8 @@ export default function Listing() {
   const [contact, setContact] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const listingId = param.listingId;
-
+  // console.log("currentUser",currentUser);
+  // console.log("listing", listing);
   useEffect(() => {
     const fetchListing = async () => {
       try {
@@ -177,40 +181,45 @@ export default function Listing() {
               </div>
 
               {/* Contact Section */}
-              <div className='bg-white p-6 rounded-xl shadow-lg border border-gray-200 h-fit sticky top-4 mx-auto items-center '>
-                <div className='mb-4'>
-                  <h3 className='text-xl font-semibold text-gray-800'>Contact Landlord</h3>
-                  <p className='text-gray-600 mt-1'>
-                    Interested in this property? Reach out to the landlord for more information.
-                  </p>
+              { currentUser && listing.userRef !== currentUser._id && (
+                  <div className='bg-white p-6 rounded-xl shadow-lg border border-gray-200 h-fit sticky top-4 mx-auto items-center '>
+                  <div className='mb-4'>
+                    <h3 className='text-xl font-semibold text-gray-800'>Contact Landlord</h3>
+                    <p className='text-gray-600 mt-1'>
+                      Interested in this property? Reach out to the landlord for more information.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setContact(true)}
+                    className='w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-3 px-4 rounded-lg hover:opacity-90 transition duration-200 font-medium'
+                  >
+                    Contact Now
+                  </button>
+                  {contact && <Contact listing={listing} />}
+                  
+                  {/* Additional Info */}
+                  <div className='mt-6 pt-6 border-t border-gray-200'>
+                    <h4 className='font-medium text-gray-800 mb-2'>Property Details</h4>
+                    <ul className='space-y-2 text-gray-600'>
+                      <li className='flex justify-between'>
+                        <span>Type:</span>
+                        <span className='font-medium capitalize'>{listing.type}</span>
+                      </li>
+                      <li className='flex justify-between'>
+                        <span>Offer:</span>
+                        <span className='font-medium'>{listing.offer ? 'Yes' : 'No'}</span>
+                      </li>
+                      <li className='flex justify-between'>
+                        <span>Listed:</span>
+                        <span className='font-medium'>{new Date(listing.createdAt).toLocaleDateString()}</span>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-                <button
-                  onClick={() => setContact(true)}
-                  className='w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-3 px-4 rounded-lg hover:opacity-90 transition duration-200 font-medium'
-                >
-                  Contact Now
-                </button>
-                {contact && <Contact listing={listing} />}
-                
-                {/* Additional Info */}
-                <div className='mt-6 pt-6 border-t border-gray-200'>
-                  <h4 className='font-medium text-gray-800 mb-2'>Property Details</h4>
-                  <ul className='space-y-2 text-gray-600'>
-                    <li className='flex justify-between'>
-                      <span>Type:</span>
-                      <span className='font-medium capitalize'>{listing.type}</span>
-                    </li>
-                    <li className='flex justify-between'>
-                      <span>Offer:</span>
-                      <span className='font-medium'>{listing.offer ? 'Yes' : 'No'}</span>
-                    </li>
-                    <li className='flex justify-between'>
-                      <span>Listed:</span>
-                      <span className='font-medium'>{new Date(listing.createdAt).toLocaleDateString()}</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+              )
+
+              }
+              
             </div>
           </div>
         </>
