@@ -14,6 +14,7 @@ export default function UpdateListing() {
               parking: false,
               type: "rent",       
               offer: false,
+              phone:'',
               imageUrl:[],
               userRef:''
        });
@@ -203,6 +204,12 @@ export default function UpdateListing() {
                    required 
                    onChange={handleChange}
                    value={forData.address}/>
+            <input type="text"
+                   placeholder='phone Number' 
+                   className='border-0 p-4  focus:outline-blue-300 rounded-lg bg-white'  id="phone"
+                   required 
+                   onChange={handleChange}
+                   value={forData.phone}/>
 
             <div className='flex gap-7 flex-wrap'>
 

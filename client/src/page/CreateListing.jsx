@@ -15,6 +15,7 @@ export default function CreateListing() {
               type: "rent",       
               offer: false,
               imageUrl:[],
+              phone:'',
               userRef:''
        });
        const [files, setFile] = useState([]);
@@ -185,6 +186,14 @@ export default function CreateListing() {
                    required 
                    onChange={handleChange}
                    value={forData.address}/>
+
+            <input type="text"
+                   placeholder='Phone Number' 
+                   className='border-0 p-4  focus:outline-blue-300 rounded-lg bg-white'  id="phone"
+                   required 
+                   onChange={handleChange}
+                   value={forData.phone}/>
+     
 
             <div className='flex gap-7 flex-wrap'>
 

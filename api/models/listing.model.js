@@ -53,6 +53,10 @@ const ListingSchema = new mongoose.Schema({
     type:String,
     require:true,
   },
+  phone: {
+    type: String,
+    required: true,
+  },
 },{timestamps:true});
 
 const Listing = mongoose.model('Listing',ListingSchema)
