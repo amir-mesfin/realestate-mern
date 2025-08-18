@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaPaperPlane, FaPhone, FaEnvelope, FaMapMarkerAlt, FaUser, FaComment } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
@@ -6,12 +6,33 @@ const Contact = ({ listing }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '',
-    message: `Hi, I'm interested in ${listing?.name} at ${listing?.address}. Could you tell me more about it?`
+    message: ``
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [landLord, setLandLord] = useState(null);
+  const [error, setError] = useState(null);
+  useEffect( ()=>{
+  
+           const fetchLandLord = async ()=>{
+            try{
+                 const realStateLord = await fetch(`/api/user/${listing.userRef}`);
+                 const data = await realStateLord.json();
+                if(data.success === false){
+                  setError(data.message);
+                  return;
+                }
+                 console.log(data);
+                setLandLord(data);
+            }catch(err){
+                 setError(err);
+            }
+           }
+           fetchLandLord();
+  },[listing.userRef])
+  // React.useEffect(()=>{
+  //   console.log(landLord);
+  // })
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
@@ -19,27 +40,54 @@ const Contact = ({ listing }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setIsLoading(false);
-    setIsSubmitted(true);
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setIsSubmitted(false);
+  
+    // Build payload to send
+    const payload = {
+      ...formData,          
+      to: landLord?.email,  // landlord’s email
+      property: listing?.name, 
+      address: listing?.address,
+      phone: listing?.phone,
+    };
+  
+    try {
+      const res = await fetch("/api/contact/send-to-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+  
+      const data = await res.json();
+  
+      if (data.success === false) {
+        setError(data.message);
+        setIsLoading(false);
+        return;
+      }
+  
+      // success
+      setIsSubmitted(true);
       setFormData({
-        ...formData,
+        name: "",
+        email: "",
+        phone: "",
         message: `Hi, I'm interested in ${listing?.name} at ${listing?.address}. Could you tell me more about it?`
       });
-    }, 3000);
+  
+    } catch (err) {
+      setError("Failed to send message");
+    } finally {
+      setIsLoading(false);
+    }
   };
+  
+  console.log(formData);
 
   return (
     <div className="mt-6 p-6 rounded-xl bg-gradient-to-br from-blue-50 to-purple-50 border border-purple-100 shadow-lg">
       <h3 className="text-2xl font-bold text-purple-800 mb-4 flex items-center gap-2">
         <FaComment className="text-blue-500" />
-        Contact Agent
+        Contact Owner
       </h3>
 
       {/* Contact Information */}
@@ -50,7 +98,7 @@ const Contact = ({ listing }) => {
           </div>
           <div>
             <p className="text-sm text-gray-500">Phone</p>
-            <p className="font-medium text-blue-800">(123) 456-7890</p>
+            <p className="font-medium text-blue-800">{listing.phone}</p>
           </div>
         </div>
 
@@ -60,7 +108,7 @@ const Contact = ({ listing }) => {
           </div>
           <div>
             <p className="text-sm text-gray-500">Email</p>
-            <p className="font-medium text-purple-800">agent@example.com</p>
+            <p className="font-medium text-purple-800">{landLord?.email}</p>
           </div>
         </div>
 
@@ -69,8 +117,8 @@ const Contact = ({ listing }) => {
             <FaMapMarkerAlt className="text-teal-600" />
           </div>
           <div>
-            <p className="text-sm text-gray-500">Office</p>
-            <p className="font-medium text-teal-800">123 Main St</p>
+            <p className="text-sm text-gray-500">Address</p>
+            <p className="font-medium text-teal-800">{listing.address}</p>
           </div>
         </div>
       </div>

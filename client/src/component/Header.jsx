@@ -14,7 +14,7 @@ export default function Header() {
   return (
     <header className='bg-slate-200 shadow-md ' >
        <div className='flex justify-between items-center max-w-6xl mx-auto p-3'>
-        <Link to="/" className='md:flex'>
+        <Link to="/" className='md:flex border-0  hover:border-2 hover:border-[#fff] hover:p-3 '>
         <img src='http://res.cloudinary.com/de91zvrzu/image/upload/v1755390858/fmbw5k0za7akjpwavc1k.ico' alt=""  
          className='w-20 h-10 rounded-xl mr-5'/>
         <h1 className='font-bold text-sm sm:text-xl md:text-2xl flex flex-wrap'>
@@ -28,7 +28,7 @@ export default function Header() {
         </form>
         <ul className='flex justify-between space-x-6  items-center' >
           <Link to="/home">
-          <li className='hidden sm:inline text-slate-700 hover:underline'>Home</li>
+          <li className='hidden  sm:inline text-slate-700 hover:underline'>Home</li>
           </Link>
           <Link to="about">
           <li className='hidden sm:inline text-slate-700 hover:underline'>About</li>

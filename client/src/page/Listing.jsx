@@ -66,7 +66,7 @@ export default function Listing() {
               loop={true}
               className='w-full'
             >
-              {listing.imageUrl.map((url) => (
+              {listing.imageUrl?.map((url) => (
                 <SwiperSlide key={url}>
                   <div 
                     className='w-full h-[50vh] md:h-[55vh] lg:h-[65vh]'
