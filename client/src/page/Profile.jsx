@@ -25,7 +25,7 @@ export default function Profile() {
   const [showListing, setShowListing] = useState(false);
   const [listingDeleteError, setListingDeleteError] = useState(null);
   const { currentUser,error,loading, } = useSelector((state) => state.user);
-  // console.log(currentUser);
+  console.log(error);
   const dispatch = useDispatch();
   // Handle avatar URL with fallback
   const getAvatarUrl = () => {
@@ -105,7 +105,7 @@ export default function Profile() {
         ...formData,
         ...(profileImage && { avatar: profileImage })
       };
-      // console.log(updateData);
+      console.log("abushe");
       
       // console.log("Submitting:", updateData);
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
@@ -116,9 +116,11 @@ export default function Profile() {
       // console.log(res);
       // Simulate API call
        const data =  await res.json();
+      //  console.log(data)
        if(data.success === false){
         dispatch(updateFailure(data.message));
         setSuccess(null);
+        // return;
        }else{
         // console.log(data)
         dispatch(updateSuccess(data));
@@ -129,6 +131,7 @@ export default function Profile() {
     } catch (err) {
       dispatch(updateFailure(err.message));
       setSuccess(null);
+      // console.log(err);
     }
   };
 
@@ -163,7 +166,7 @@ export default function Profile() {
       }
   dispatch(signOutUserSuccess(data));
    }catch(err){
-    dispatch(signOutUSerFailure(err));
+    dispatch(signOutUSerFailure(err.message));
     
    }  }
 
@@ -180,13 +183,13 @@ export default function Profile() {
         setUserListing(data);
           
       }catch(error){
-        setShowListingError(error);
+        setShowListingError(error.message);
       }
        setShowListing(true);
 
    }
    React.useEffect(()=>{
-      console.log(userListing);
+      // console.log(userListing);
    },[userListing]);
 
    const handleListingDelete = async(listingId) =>{
@@ -211,7 +214,7 @@ export default function Profile() {
       <h1 className='text-3xl text-center font-semibold my-9'>Profile</h1>
       
       {/* Success/Error Messages */}
-      {error && (
+      {(err|| error) && (
         <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
           {error|| err}
         </div>
@@ -298,7 +301,7 @@ export default function Profile() {
           className='bg-slate-700 p-4 rounded-lg text-white font-semibold text-xl uppercase hover:opacity-95 disabled:opacity-80'
           disabled={loading}
         >
-          {loading ? 'Updating...' : 'Update Profile'}
+          {loading ? 'Updating...' : 'Update  Profile'}
         </button>
       
       </form>
