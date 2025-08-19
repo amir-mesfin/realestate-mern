@@ -1,15 +1,31 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import {FaSearch} from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 
 export default function Header() {
-  
+  const [searchTerm, setSearchTerm] = useState('');
   const {currentUser} = useSelector(state=>state.user);
   // console.log(currentUser.avatar);
+  const  navigate = useNavigate();
   const avatarURL = currentUser?.avatar?.includes("googleusercontent") && !currentUser.avatar.includes("=")
   ? currentUser.avatar + "=s96-c"
   : currentUser?.avatar 
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const urlParams =  new URLSearchParams(window.location.search);
+    urlParams.set('searchTerm',searchTerm);
+    const searchQuery = urlParams.toString();
+    navigate(`/search?${searchQuery}`);
+  }
+ useEffect(()=>{
+  const urlParams =  new URLSearchParams(location.search);
+  const searchTermFormUrl = urlParams.get('searchTerm');
+   if(searchTermFormUrl){
+      setSearchTerm(searchTermFormUrl);
+   }
+ },[location.search])
 
   return (
     <header className='bg-slate-200 shadow-md ' >
@@ -22,9 +38,18 @@ export default function Header() {
           <span className='text-slate-700 '>Estate</span>
         </h1>
         </Link>
-        <form className='bg-slate-100 p-3 rounded-lg flex items-center'>
-          <input type="text" placeholder='Search....' className='bg-transparent focus:outline-none w-24 sm:w-64 lg:w-95' />
-          <FaSearch className="text-slate-500" />
+        <form className='bg-slate-100 p-3 rounded-lg flex items-center'
+              onSubmit={handleSubmit}>
+          <input type="text"
+                  placeholder='Search....' 
+                  className='bg-transparent focus:outline-none w-24 sm:w-64 lg:w-95'
+                  value={searchTerm}
+                  onChange={(e)=> setSearchTerm(e.target.value)} 
+                   />
+             <button>
+                   <FaSearch className="text-slate-500" />
+             </button>
+          
         </form>
         <ul className='flex justify-between space-x-6  items-center' >
           <Link to="/home">
