@@ -80,7 +80,7 @@ export const deleteListing =  async(req,res,next)=>{
    export const getListing = async(req, res, next) =>{
       try{
               const limit = parseInt(req.query.limit) || 10 ;
-              const startIndex = parseInt(startIndex) || 0 ;
+              const startIndex = parseInt(req.query.startIndex) || 0 ;
               let offer = require.query.offer;
 
               if(offer === undefined || offer === 'false'){
