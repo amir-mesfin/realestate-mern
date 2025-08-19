@@ -10,21 +10,23 @@ export const sendToEmail = async (req, res, next) => {
 
     // Use MailerSend's test domain as the sender
     const testDomainSender = 'no-reply@test-nrw7gymd6m2g2k8e.mlsender.net';
-
+    const owner ='abushe339@gmail.com';
     const response = await mailersend.email.send({
       from: {
         email: testDomainSender, 
         name:'Abushe-Real-State'
       },
       to: [{
-        email: to // Make sure this email is whitelisted in MailerSend
+        email:owner // Make sure this email is whitelisted in MailerSend
       }],
       reply_to: { // Add user's real email as reply-to
         email: email,
         name: name
       },
       subject: `New inquiry about ${property}`,
-      text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${message}\n\nProperty: ${property}\nAddress: ${address}`,
+      text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${message}\n\nProperty: ${property}\nAddress: ${address}
+       \n send to : ${to}`,
+
     });
 
     res.json({ success: true, message: "Message sent successfully", response });

@@ -203,7 +203,7 @@ const Contact = ({ listing }) => {
             {isLoading ? (
               'Sending...'
             ) : (
-              <>
+              <>  
                 <FaPaperPlane />
                 Send Message
               </>
