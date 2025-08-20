@@ -303,15 +303,17 @@ export default function Profile() {
         >
           {loading ? 'Updating...' : 'Update  Profile'}
         </button>
-      
-      </form>
-      <Link to="/create-listing">
-      <button 
-          className='bg-green-600 p-4 rounded-lg text-white font-semibold text-xl uppercase hover:opacity-95 disabled:opacity-80 w-120  mt-4'
+        <Link to="/create-listing">
+      <button  
+          type='button'
+          className='bg-green-600  p-4 rounded-lg text-white font-semibold text-xl uppercase hover:opacity-95 disabled:opacity-80 w-full'
         >
           create listing
         </button>
       </Link>
+      
+      </form>
+      
 
       <div className='flex justify-between mt-5'>
         <button 
