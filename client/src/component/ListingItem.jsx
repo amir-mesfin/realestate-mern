@@ -24,7 +24,7 @@ export default function ListingItem( { listing }) {
     userRef
   } = listing;
   return (
-    <div className='mx-auto  bg-white flex-col gap=8  rounded-lg shadow-md  hover:shadow-xl transition-shadow duration-300 w-[340px] overflow-hidden'>
+    <div className='  bg-white flex-col gap=6  rounded-2xl shadow-md  mx-auto md:mx-6 hover:shadow-xl transition-shadow duration-300 w-[340px] overflow-hidden'>
       <Link to={`/listing/${_id}`} >
       <img src={imageUrl[0]} 
            alt="image"  
