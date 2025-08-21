@@ -1,6 +1,7 @@
 import React, {useState, useEffect}from 'react'
 import { useNavigate } from 'react-router-dom';
-
+import FadeLoaderComponent from '../component/FadeLoaderComponent'
+import ListingItem from '../component/ListingItem';
 export default function Search() {
   const navigate = useNavigate();
   const [sideBarData, setSideBarData] = useState({
@@ -213,10 +214,29 @@ console.log(error);
                   </form>
           </div>
           {/* right side */}
-          <div className=''>
-                  <h1
-                   className='text-3xl p-3 font-semibold border-b text-slate-800 '>Listing result</h1>
-          </div>
+          <div className=' flex-1 '>
+                  <h1 className='text-3xl p-3 font-semibold border-b text-slate-800'>Listing result</h1>
+                  
+                  <div className='flex  flex-wrap gap-5 mt-8'>
+                    {!loading && listing.length === 0 && (
+                      <p className='text-2xl text-slate-700'>No listing found!</p>
+                    )}
+                    
+                    {loading && (
+                      <div className=''>
+                        <FadeLoaderComponent />
+                      </div>
+                    )}
+                    {
+                      !loading && listing.length > 0  &&  (
+                          listing.map( (listing,) =>(
+                             <ListingItem key={listing._id}  listing={listing}  />
+                          ))
+                      )
+                    }
+                  </div>
+            </div>
+
     </div>
   )
 }
