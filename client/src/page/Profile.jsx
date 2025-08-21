@@ -15,7 +15,7 @@ import {Link} from 'react-router-dom'
 
 export default function Profile() {
 
-  const [profileImage, setProfileImage] = useState("");
+  const [profileImage, setProfileImage] = useState(null);
   const [formData, setFormData] = useState({});
   const [load, setLoading] = useState(false);
   const [err, setError] = useState(null);
@@ -25,7 +25,7 @@ export default function Profile() {
   const [showListing, setShowListing] = useState(false);
   const [listingDeleteError, setListingDeleteError] = useState(null);
   const { currentUser,error,loading, } = useSelector((state) => state.user);
-  console.log(error);
+  // console.log(error);
   const dispatch = useDispatch();
   // Handle avatar URL with fallback
   const getAvatarUrl = () => {
@@ -76,7 +76,7 @@ export default function Profile() {
       if (!res.ok) throw new Error('Image upload failed');
       
       const data = await res.json();
-      console.log(data)
+      // console.log(data)
       setProfileImage(data.secure_url);
       setSuccess('Profile image updated successfully!');
     } catch (err) {
