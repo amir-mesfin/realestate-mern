@@ -87,3 +87,18 @@ export const requestSeller = async(req, res, next) =>{
     next(err);
    }
 }
+
+
+export const getRequest = async(req, res, next) =>{
+    try{
+      const requests = await User.find({ sellerRequest:true, role: "user" });
+      if(!requests) {
+        next(ErrorHandler(404, 'user not Found'));
+        // console.log('requests');
+        return;
+      }
+      res.json(requests);
+    }catch(err){
+      next(err);
+    }
+}
