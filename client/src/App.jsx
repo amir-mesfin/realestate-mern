@@ -12,6 +12,7 @@ import CreateListing from './page/CreateListing';
 import UpdateListing from './page/UpdateListing';
 import Listing from './page/Listing';
 import Search from './page/Search';
+import Footer from './component/Footer';
 function App() {
   const [count, setCount] = useState(0)
 
@@ -40,6 +41,7 @@ function App() {
                        }
         /> */}
        </Routes>
+    <Footer />
     </BrowserRouter>
   )
 }

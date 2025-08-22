@@ -242,25 +242,24 @@ console.log(error);
           {/* right side */}
           <div className=' flex-1 '>
                   <h1 className='text-3xl p-3 font-semibold border-b text-slate-800'>Listing result</h1>
-                  
-                  <div className='flex  flex-wrap gap-5 mt-8 '>
+                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
                     {!loading && listing.length === 0 && (
-                      <p className='text-2xl text-slate-700'>No listing found!</p>
+                      <p className="text-2xl text-slate-700">No listing found!</p>
                     )}
-                    
+
                     {loading && (
-                      <div className=''>
+                      <div className="col-span-full flex justify-center">
                         <FadeLoaderComponent />
                       </div>
                     )}
-                    {
-                      !loading && listing.length > 0  &&  (
-                          listing.map( (listing,) =>(
-                             <ListingItem key={listing._id}  listing={listing}  />
-                          ))
-                      )
-                    }
+
+                    {!loading &&
+                      listing.length > 0 &&
+                      listing.map((listing) => (
+                        <ListingItem key={listing._id} listing={listing} />
+                      ))}
                   </div>
+
                   {
                     showMore && (
                       <button  className='text-green-700 w-full  text-xl hover:underline p-7' 

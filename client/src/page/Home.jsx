@@ -130,14 +130,12 @@ export default function Home() {
                      </Link>
                   </div>
                     
-                     <div className='flex  flex-wrap  gap-4'>
-                             {
-                              offerListing.map((listing)=>(
-                                 <ListingItem key={listing._id} 
-                                               listing={listing}/>
-                              ))
-                             }     
-                     </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                          {offerListing.map((listing) => (
+                            <ListingItem key={listing._id} listing={listing} />
+                          ))}
+                </div>
+
               </div>
             )
            }
@@ -160,14 +158,12 @@ export default function Home() {
                      </Link>
                   </div>
                     
-                     <div className='flex  flex-wrap  gap-4'>
-                             {
-                              rentListing.map((listing)=>(
-                                 <ListingItem key={listing._id} 
-                                               listing={listing}/>
-                              ))
-                             }     
-                     </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {rentListing.map((listing) => (
+                    <ListingItem key={listing._id} listing={listing} />
+                  ))}
+                </div>
+
               </div>
             )
            }
@@ -189,14 +185,12 @@ export default function Home() {
                      </Link>
                   </div>
                     
-                     <div className='flex  flex-wrap  gap-4'>
-                             {
-                              saleListing.map((listing)=>(
-                                 <ListingItem key={listing._id} 
-                                               listing={listing}/>
-                              ))
-                             }     
-                     </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                          {saleListing.map((listing) => (
+                            <ListingItem key={listing._id} listing={listing} />
+                          ))}
+                </div>
+
               </div>
             )
            }
