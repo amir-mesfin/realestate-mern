@@ -71,7 +71,7 @@ export default function Home() {
   },[])
 //  console.log(rentListing);
 //  console.log(saleListing);
- console.log(offerListing);
+//  console.log(offerListing);
 //  console.log(error);
   return (
     <div>
