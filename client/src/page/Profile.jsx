@@ -25,7 +25,8 @@ export default function Profile() {
   const [showListing, setShowListing] = useState(false);
   const [listingDeleteError, setListingDeleteError] = useState(null);
   const { currentUser,error,loading, } = useSelector((state) => state.user);
-  // console.log(error);
+  const [requestMessage, setRequestMessage]= useState(null);
+  // console.log(currentUser);
   const dispatch = useDispatch();
   // Handle avatar URL with fallback
   const getAvatarUrl = () => {
@@ -209,6 +210,31 @@ export default function Profile() {
     }
       
    }
+   
+
+   const requestSeller = async() => {
+
+     try{
+      const res = await fetch(`/api/user/request-seller/${currentUser._id}`,{
+        method: 'POST',
+      });
+      const data = await res.json();
+      if(data.success === false){
+        setError(data.message);
+      }
+      // console.log(data);
+      setRequestMessage(data.message);
+      dispatch(updateSuccess({
+        ...currentUser,
+        sellerRequest: true,
+        requestMessage:'We’ve got your request! Please give us up to 24 hours to review. You’ll hear back soon'
+      }));
+    console.log(currentUser);
+     }catch(err){
+
+      console.log(err)
+     }
+   }
   return (
     <div className='max-w-lg mx-auto p-4'>
       <h1 className='text-3xl text-center font-semibold my-9'>Profile</h1>
@@ -304,16 +330,42 @@ export default function Profile() {
           {loading ? 'Updating...' : 'Update  Profile'}
         </button>
         <Link to="/create-listing">
-      <button  
+        {
+           currentUser.role === 'seller' && (
+            <button  
           type='button'
           className='bg-green-600  p-4 rounded-lg text-white font-semibold text-xl uppercase hover:opacity-95 disabled:opacity-80 w-full'
         >
           create listing
         </button>
+           )
+        }
+
+      
       </Link>
+      {
+        !requestMessage && currentUser.sellerRequest === false && currentUser.role === 'user' &&  (
+          <button  type='button'
+                className="bg-blue-600 text-white font-semibold p-4 rounded-lg"
+                onClick={() => requestSeller()}
+            >
+              Request to Become Seller
+            </button>
+        )
+      }  
+      {
+        currentUser.sellerRequest === true && (requestMessage || currentUser.requestMessage ) && currentUser.role === 'user' && (
+          <p className='w-full max-h-35px p-5 text-slate-500 rounded-lg bg-green-300'>
+            {(requestMessage || currentUser.requestMessage)}
+          </p>
+        )
+      }
+
       
       </form>
-      
+
+
+       
 
       <div className='flex justify-between mt-5'>
         <button 
@@ -329,14 +381,16 @@ export default function Profile() {
           Sign Out
         </button>
       </div>
+
+      
       {
-         !showListing && <button className='text-center items-center w-full mt-6 text-green-700 '
-         onClick={handleShowList}>Show Listings</button>
+         currentUser.role === ('seller' || 'admin') && !showListing && (<button className='text-center items-center w-full mt-6 text-green-700 '
+         onClick={handleShowList}>Show Listings</button>)
       }
        
               <p className='text-sm text-red-700  w-full'>{ShowListingError && ShowListingError}</p>
 
-        {userListing && userListing.length > 0 &&
+        { userListing && userListing.length > 0 &&
 
           (
             <div className= 'flex flex-col '>

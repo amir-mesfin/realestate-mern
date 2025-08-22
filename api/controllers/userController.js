@@ -67,3 +67,23 @@ export const getUSer = async(req, res, next)=>{
   // console.log(err);
   }
 }
+
+
+export const requestSeller = async(req, res, next) =>{
+  // console.log(req.params.id);
+   try{
+    const user = await User.findById(req.params.id);
+    if(!user) {
+      next(ErrorHandler(404, 'user not Found'));
+      return;
+    }
+    user.sellerRequest = true;
+    await user.save();
+
+    // console.log(user);
+  
+    res.json({ message: "Your seller request has been received. Our team will review it, and you will receive a response within 24 hours" });
+   }catch(err){
+    next(err);
+   }
+}
