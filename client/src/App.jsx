@@ -13,6 +13,7 @@ import UpdateListing from './page/UpdateListing';
 import Listing from './page/Listing';
 import Search from './page/Search';
 import Footer from './component/Footer';
+import Dashborder from './page/Dashborder';
 function App() {
   const [count, setCount] = useState(0)
 
@@ -21,6 +22,7 @@ function App() {
      <Header />
        <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/dash" element={<Dashborder />} /> 
               <Route path="/search" element={<Search />} />
               <Route path="/sign-in" element={<Signin />} />
               <Route path="/listing/:listingId" element={<Listing />} />
