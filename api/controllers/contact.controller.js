@@ -1,5 +1,5 @@
 import { MailerSend } from 'mailersend';
-
+import ContactMessage from '../models/contact.model.js';
 export const sendToEmail = async (req, res, next) => {
   const { name, email, phone, message, to, property, address } = req.body;
   
@@ -41,5 +41,19 @@ export const sendToEmail = async (req, res, next) => {
      
     });
     console.log(err.message);
+  }
+};
+
+
+export const contactInformation = async (req, res, next) => {
+  try {
+    const { name, email, message } = req.body;
+
+    const newInformation = new ContactMessage({ name, email, message });
+    await newInformation.save();
+
+    res.status(200).json({ success: true, message: "✅ Message Sent successfully!" });
+  } catch (err) {
+    next(err);
   }
 };
