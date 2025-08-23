@@ -90,7 +90,7 @@ const DeleteUser = async (userId,role) =>{
         </h3>
       {
           allSeller?.map((userList)=>(
-            <div className='flex justify-between items-center' key={userList._id}>
+            <div className='flex justify-between items-center bg-white px-5 rounded-lg' key={userList._id}>
                <div className='flex items-center gap-5 '
                   > 
                     <img  className="h-26 w-26 rounded-full" src={userList.avatar} alt="" />
@@ -115,7 +115,7 @@ const DeleteUser = async (userId,role) =>{
         </h3>
       {
           allUser?.map((userList)=>(
-            <div className='flex justify-between items-center' key={userList._id}>
+            <div className='flex justify-between items-center  bg-white px-5 rounded-lg' key={userList._id}>
                <div className='flex items-center gap-5 '
                   > 
                     <img  className="h-26 w-26 rounded-full" src={userList.avatar} alt="" />

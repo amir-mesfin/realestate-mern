@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AddSeller from "./AddSeller";
 import AddAdmin from "./AddAdmin";
 import AllUser from "./AllUser";
+import OfferRealState from './OfferRealState'
 import { useSelector } from "react-redux";
 
 export default function Dashborder() {
@@ -52,19 +53,19 @@ export default function Dashborder() {
     </div>
   
     {/* Main Content */}
-    <div className="flex-1 w-full bg-white rounded-xl shadow-sm p-4 overflow-y-auto h-[80vh] md:h-[80vh]">
+    <div className="flex-1 w-full bg-slate-100 rounded-xl shadow-sm p-4 overflow-y-auto h-[80vh] md:h-[80vh]">
       {activePage === "add_Seller" && <AddSeller />}
       {activePage === "add_admin" && <AddAdmin />}
       {activePage === "sale" && <h1>💰 Sale Real State</h1>}
       {activePage === "rent" && <h1>🏢 Rent Real State</h1>}
-      {activePage === "offer" && <h1>🎁 Offer Real State</h1>}
+      {activePage === "offer" && <OfferRealState />}
       {activePage === "message" && <h1>💬 Messages</h1>}
       {activePage === "Dashboard" && <h1>📊 Dashboard Overview</h1>}
       {activePage === "User" && <AllUser />}
     </div>
   
     {/* Right Sidebar */}
-    <div className="hidden md:flex w-full md:w-1/5 bg-white rounded-xl shadow-sm py-3 px-4 flex-col justify-between">
+    <div className="hidden md:flex w-full md:w-1/5 bg-slate- rounded-xl shadow-sm py-3 px-4 flex-col justify-between">
       <div className="h-[400px] flex flex-col">
         <div className="flex justify-between">
           <h2 className="text-lg font-bold text-slate-600">Top Agent</h2>
