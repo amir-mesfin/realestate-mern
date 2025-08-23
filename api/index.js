@@ -32,7 +32,7 @@ app.use("/api/user",userRouter);
 app.use("/api/auth",authRouter );
 app.use("/api/listing",listingRouter);
 app.use('/api/contact', contactRouter);
-app.use('/api/adminWOrk',adminRouter );
+app.use('/api/adminWork',adminRouter );
 
 
 app.use((err,req, res, next)=>{
