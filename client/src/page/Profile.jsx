@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect} from 'react';
 import { useSelector } from 'react-redux';
 import {updateUserStart,
         updateSuccess,
@@ -26,6 +26,7 @@ export default function Profile() {
   const [listingDeleteError, setListingDeleteError] = useState(null);
   const { currentUser,error,loading, } = useSelector((state) => state.user);
   const [requestMessage, setRequestMessage]= useState(null);
+
   // console.log(currentUser);
   const dispatch = useDispatch();
   // Handle avatar URL with fallback
@@ -189,9 +190,9 @@ export default function Profile() {
        setShowListing(true);
 
    }
-   React.useEffect(()=>{
-      // console.log(userListing);
-   },[userListing]);
+  //  React.useEffect(()=>{
+  //     // console.log(userListing);
+  //  },[userListing]);
 
    const handleListingDelete = async(listingId) =>{
     try{
@@ -235,6 +236,7 @@ export default function Profile() {
       console.log(err)
      }
    }
+
   return (
     <div className='max-w-lg mx-auto p-4'>
       <h1 className='text-3xl text-center font-semibold my-9'>Profile</h1>
@@ -331,7 +333,7 @@ export default function Profile() {
         </button>
         <Link to="/create-listing">
         {
-           currentUser.role === 'seller' && (
+           (currentUser.role === 'seller' || currentUser.role ===  'admin') && (
             <button  
           type='button'
           className='bg-green-600  p-4 rounded-lg text-white font-semibold text-xl uppercase hover:opacity-95 disabled:opacity-80 w-full'
@@ -384,7 +386,7 @@ export default function Profile() {
 
       
       {
-         currentUser.role === ('seller' || 'admin') && !showListing && (<button className='text-center items-center w-full mt-6 text-green-700 '
+        (currentUser.role === 'seller' || currentUser.role === 'admin') && !showListing && (<button className='text-center items-center w-full mt-6 text-green-700 '
          onClick={handleShowList}>Show Listings</button>)
       }
        

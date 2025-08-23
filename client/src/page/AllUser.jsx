@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 
-export default function AddSeller() {
+export default function AllUSer() {
   const [error, SetError] = useState(null);
   const [requestUser, setRequestUser] = useState([]);
   useEffect(()=>{
-      const GetProve = async () =>{
+      const GetAllUser = async () =>{
            try{
             const res = await fetch("/api/user/requestSeller");
             const data = await res.json();
@@ -17,10 +17,10 @@ export default function AddSeller() {
             SetError(err);
            }
       }
-      GetProve();
+      GetAllUser();
   },[]);
 
-const acceptSeller = async (userId) =>{
+const DeleteUser = async (userId) =>{
      console.log(userId);
        try{
              const res = await fetch(`/api/user/accept/requestSeller/${userId}`,{
@@ -57,7 +57,7 @@ const acceptSeller = async (userId) =>{
                  </div>
                  <div>
                  <button className='bg-blue-400 py-2 px-5 rounded-xl   text-white '
-                  onClick={()=> acceptSeller(userList._id)}  >accept</button>
+                  onClick={()=> DeleteUser(userList._id)}  >accept</button>
                      
                  </div>
             </div>

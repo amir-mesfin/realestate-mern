@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import './App.css';
 import {BrowserRouter,Route,Routes} from 'react-router-dom';
 import Home from './page/Home';
@@ -14,8 +13,37 @@ import Listing from './page/Listing';
 import Search from './page/Search';
 import Footer from './component/Footer';
 import Dashborder from './page/Dashborder';
+import { useDispatch, useSelector } from "react-redux";
+import { updateSuccess } from "./redux/user/userSlice";
+import { useEffect } from "react";
+
+
 function App() {
-  const [count, setCount] = useState(0)
+
+  const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (!currentUser?._id) return;
+
+    const fetchUserData = async () => {
+      try {
+        const res = await fetch(`/api/user/${currentUser._id}`);
+        const data = await res.json();
+        if (data.success !== false) {
+          dispatch(updateSuccess(data));
+        }
+      } catch (err) {
+        console.error("Failed to refresh user data", err);
+      }
+    };
+
+    fetchUserData();
+
+    const interval = setInterval(fetchUserData, 10 * 60 * 1000);
+
+    return () => clearInterval(interval); 
+  }, [currentUser?._id, dispatch]);
 
   return (
     <BrowserRouter>

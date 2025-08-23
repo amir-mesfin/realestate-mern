@@ -4,6 +4,7 @@ import userRouter from './routes/userRouter.js'
 import contactRouter from './routes/contact.router.js'
 import authRouter from './routes/auth.route.js'
 import listingRouter from './routes/listing.route.js'
+import adminRouter from './routes/admin.route.js'
 import cookieParser from 'cookie-parser';
 const app = express();
 const PORT = process.env.PORT || 3000
@@ -31,7 +32,7 @@ app.use("/api/user",userRouter);
 app.use("/api/auth",authRouter );
 app.use("/api/listing",listingRouter);
 app.use('/api/contact', contactRouter);
-
+app.use('/api/adminWOrk',adminRouter );
 
 
 app.use((err,req, res, next)=>{

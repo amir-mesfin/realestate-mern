@@ -1,8 +1,22 @@
 import React, { useState } from "react";
 import AddSeller from "./AddSeller";
+import AddAdmin from "./AddAdmin";
+import { useSelector } from "react-redux";
 
 export default function Dashborder() {
   const [activePage, setActivePage] = useState("Dashboard");
+  const { currentUser,} = useSelector((state) => state.user);
+  console.log(currentUser);
+
+  if (currentUser.role !== "admin") {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <h1 className="text-2xl font-bold text-red-500">
+          🚫 Access Denied — Admins Only
+        </h1>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col md:flex-row gap-4 my-8 px-4">
@@ -38,7 +52,7 @@ export default function Dashborder() {
       {/* Main Content */}
       <div className="flex-1 w-full bg-white rounded-xl shadow-sm p-4 min-h-[300px]">
         {activePage === "add_Seller" && <AddSeller />}
-        {activePage === "add_admin" && <h1>👤 Add Admin Content</h1>}
+        {activePage === "add_admin" &&  <AddAdmin />}
         {activePage === "sale" && <h1>💰 Sale Real State</h1>}
         {activePage === "rent" && <h1>🏢 Rent Real State</h1>}
         {activePage === "offer" && <h1>🎁 Offer Real State</h1>}

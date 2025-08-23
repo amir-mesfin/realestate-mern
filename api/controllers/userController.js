@@ -102,3 +102,42 @@ export const getRequest = async(req, res, next) =>{
       next(err);
     }
 }
+
+//acceptane reuest Seller 
+
+export const acceptanceRequestSeller = async(req,res , next)=>{
+  try{
+        const id = req.params.id ;
+        const user =await  User.findById(id);
+        if(!user){
+          // console.log('user');
+          return next(ErrorHandler(404, 'user not Found'));
+        }
+       user.role = "seller";
+       user.sellerRequest = false;
+       await user.save();
+       res.json({ success:true,  message: "User upgraded to seller." });
+  }catch(err){
+    next(err)
+  }
+}
+
+
+
+export const makeAdmin = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) return next(ErrorHandler(404, 'email is require'));
+    const user = await User.findOne({ email });
+
+    if (!user)  return next(ErrorHandler(404, 'user not Found'));
+    user.role = "admin";
+    await user.save();
+
+    res.json({ success: true, message: `${email} is now an admin` });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
