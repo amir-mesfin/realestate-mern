@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import AddSeller from "./AddSeller";
 import AddAdmin from "./AddAdmin";
 import AllUser from "./AllUser";
+import RentReal from './RentReal';
+import Dashbord from './Dashbord';
+import SaleRealState from "./SaleRealState";
 import OfferRealState from './OfferRealState'
 import { useSelector } from "react-redux";
 
@@ -56,11 +59,11 @@ export default function Dashborder() {
     <div className="flex-1 w-full bg-slate-100 rounded-xl shadow-sm p-4 overflow-y-auto h-[80vh] md:h-[80vh]">
       {activePage === "add_Seller" && <AddSeller />}
       {activePage === "add_admin" && <AddAdmin />}
-      {activePage === "sale" && <h1>💰 Sale Real State</h1>}
-      {activePage === "rent" && <h1>🏢 Rent Real State</h1>}
+      {activePage === "sale" && <SaleRealState />}
+      {activePage === "rent" && <RentReal />}
       {activePage === "offer" && <OfferRealState />}
       {activePage === "message" && <h1>💬 Messages</h1>}
-      {activePage === "Dashboard" && <h1>📊 Dashboard Overview</h1>}
+      {activePage === "Dashboard" && <Dashbord />}
       {activePage === "User" && <AllUser />}
     </div>
   

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { FaMapMarkerAlt, FaBed, FaBath } from "react-icons/fa";
 
-export default function OfferRealState() {
+export default function SaleRealState() {
   const [offerListing, setOfferListing] = useState([]);
   const [error, setError] = useState(null);
   // Example: multiple offers
   useEffect(() => {
     const fetchOfferListing = async () => {
       try {
-        const res = await fetch(`/api/listing/get?offer=true`);
+        const res = await fetch(`/api/listing/get?type=sale`);
         const data = await res.json();
 
         if (data.success === false) {
