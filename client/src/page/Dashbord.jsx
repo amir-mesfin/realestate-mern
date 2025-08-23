@@ -97,10 +97,13 @@ export default function Dashbord() {
 
 
   return (
-    <div className="flex gap-4 p-4  flex-wrap justify-around">
-          <InfoCard title="Users" number={120} color="#4ade80" /> {/* Green */}
-          <InfoCard title="Sales" number={75} color="#60a5fa" />  {/* Blue */}
-          <InfoCard title="Offers" number={30} color="#f87171" /> {/* Red */}
+    <div className="flex gap-4 p-4  flex-wrap justify-around 2xl:mt-20">
+          <InfoCard title="Number Customer use System" number={numberUser} color="#4ade80" /> 
+          <InfoCard title="Number Real_State Owner" number={numberSeller} color="#60a5fa" />  
+          <InfoCard title="Number Real_state to be sale" number={numberSale} color="#4ade80" /> 
+          <InfoCard title="Number Real_state to be Rent" number={numberRent} color="#4ade80" /> 
+          <InfoCard title="Number Agent Sysyem" number={numberAdmin} color="#4ade80" /> 
+          <InfoCard title="real_state with offer" number={numberOffer} color="#f87171" /> 
   </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AddSeller from "./AddSeller";
 import AddAdmin from "./AddAdmin";
 import AllUser from "./AllUser";
@@ -11,6 +11,8 @@ import { useSelector } from "react-redux";
 export default function Dashborder() {
   const [activePage, setActivePage] = useState("Dashboard");
   const { currentUser } = useSelector((state) => state.user);
+  const [agent, setAgent] = useState([])
+  const [error,SetError] = useState(null);
 
   if (currentUser.role !== "admin") {
     return (
@@ -21,6 +23,26 @@ export default function Dashborder() {
       </div>
     );
   }
+
+     useEffect(()=>{
+          const GetAllUser = async () =>{
+               try{
+                const res = await fetch("/api/adminWork/getUSer");
+                const data = await res.json();
+                if(data.succuss === false){
+                  SetError(data.message)
+                }else{
+                  setAgent(data.filter((u) => u.role === "admin"));
+      
+                 }
+                
+               }catch(err){
+                SetError(err);
+               }
+          }
+          GetAllUser();
+      },[]);
+      console.log(agent);
 
   const menuItems = [
     { label: "Dashboard", key: "Dashboard" },
@@ -74,17 +96,21 @@ export default function Dashborder() {
           <h2 className="text-lg font-bold text-slate-600">Top Agent</h2>
           <p className="text-slate-600">...</p>
         </div>
-        <div className="mt-6 flex items-center gap-4">
-          <img
-            src="http://res.cloudinary.com/de91zvrzu/image/upload/v1755390858/fmbw5k0za7akjpwavc1k.ico"
-            alt=""
-            className="h-12 w-12 md:h-16 md:w-16 rounded-full object-cover"
-          />
-          <div>
-            <p className="font-semibold text-sm md:text-lg text-slate-700">name</p>
-            <p className="text-xs md:text-sm text-slate-500">email</p>
+        {
+          agent.map((item)=>(
+            <div className="mt-6 lg:flex items-center gap-4 bg-white rounded-xl py-2 px-4"
+               key={item._id}>
+            <img
+              src={item.avatar}
+              alt=""
+              className="h-12 w-12 md:h-16 md:w-16 rounded-full object-cover"
+            />
+            <div>
+              <p className="font-semibold text-sm md:text-lg text-slate-700">{item.username}</p>
+            </div>
           </div>
-        </div>
+          ))
+        }
       </div>
     </div>
   </div>
