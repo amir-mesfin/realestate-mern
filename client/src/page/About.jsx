@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom';
 export default function About() {
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
@@ -36,7 +36,7 @@ export default function About() {
       </p>
 
       <p className="text-lg text-gray-700">
-        Ready to find your dream property or investment opportunity? <span className="text-blue-600 font-semibold cursor-pointer">Contact us today</span> and let Abushe Real Estate guide you home.
+        Ready to find your dream property or investment opportunity? <span className="text-blue-600 font-semibold cursor-pointer"> <Link to="/contact">Contact us today</Link></span> and let Abushe Real Estate guide you home.
       </p>
     </div>
   );

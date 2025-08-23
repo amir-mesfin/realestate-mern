@@ -16,6 +16,7 @@ import Dashborder from './page/Dashborder';
 import { useDispatch, useSelector } from "react-redux";
 import { updateSuccess } from "./redux/user/userSlice";
 import { useEffect } from "react";
+import Contact from './page/Contact';
 
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
      <Header />
        <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/contact" element={<Contact />} />
               <Route path="/dash" element={<Dashborder />} /> 
               <Route path="/search" element={<Search />} />
               <Route path="/sign-in" element={<Signin />} />
