@@ -1,11 +1,15 @@
 import React, {useState} from 'react'
+import CreateListing from './CreateListing';
+import SellerUpdate from './SellerUpdate'
+import ShowListing from './ShowListing'
+
 
 export default function Seller() {
-  const [activePage, setActivePage] = useState("show");
+const [activePage, setActivePage] = useState("show");
 
 const menuItems = [
-    { label: "Create List", key: "createList" },
     { label: "show List", key: "show" },
+    { label: "Create List", key: "createList" },
     { label: "update List", key: "update" },
   ];
   return (
@@ -20,8 +24,8 @@ const menuItems = [
             className={`p-2 md:p-3 text-sm md:text-lg font-semibold whitespace-nowrap rounded-xl cursor-pointer transition 
             ${
               activePage === item.key
-                ? "bg-blue-500 text-white"
-                : "bg-blue-100 hover:bg-blue-400 hover:text-white"
+                ? "bg-green-500 text-white"
+                : "bg-blue-100 hover:bg-green-300 hover:text-white"
             }`}
             onClick={() => setActivePage(item.key)}
           >
@@ -33,9 +37,9 @@ const menuItems = [
   
     {/* Main Content */}
     <div className="flex-1 w-full bg-slate-100 rounded-xl shadow-sm p-4 overflow-y-auto h-[80vh] md:h-[80vh]">
-      {activePage === "createList" && <h1>list</h1>}
-      {activePage === "show" && <h1>show</h1>}
-      {activePage === "update" && <h1>update</h1>}
+      {activePage === "createList" && <CreateListing />}
+      {activePage === "show" && <ShowListing />}
+      {activePage === "update" && <SellerUpdate />}
      
     </div>
 

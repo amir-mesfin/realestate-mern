@@ -7,6 +7,9 @@ import Dashbord from './Dashbord';
 import Message from './Message'
 import SaleRealState from "./SaleRealState";
 import OfferRealState from './OfferRealState'
+import CreateListing from './CreateListing';
+import SellerUpdate from './SellerUpdate'
+import ShowListing from './ShowListing'
 import { useSelector } from "react-redux";
 
 export default function Dashborder() {
@@ -54,12 +57,15 @@ export default function Dashborder() {
     { label: "Sale Real_state", key: "sale" },
     { label: "Add admin", key: "add_admin" },
     { label: "Add Seller", key: "add_Seller" },
+    { label: "show List", key: "show" },
+    { label: "Create List", key: "createList" },
+    { label: "update List", key: "update" },
   ];
 
   return (
     <div className="flex flex-col md:flex-row gap-4 my-4 px-2 md:px-4 min-h-[80vh]">
     {/* Left Sidebar */}
-    <div className="w-full md:w-1/5 bg-white rounded-xl shadow-sm overflow-y-auto  md:h-auto">
+    <div className="w-full md:w-1/5 bg-white rounded-xl shadow-sm overflow-y-auto   md:overflow-y-auto md:h-[80vh]">
       <ul className="flex md:flex-col flex-row md:gap-6 gap-2 p-2 md:p-4">
         {menuItems.map((item) => (
           <li
@@ -88,6 +94,9 @@ export default function Dashborder() {
       {activePage === "message" && <Message />}
       {activePage === "Dashboard" && <Dashbord />}
       {activePage === "User" && <AllUser />}
+      {activePage === "createList" && <CreateListing />}
+      {activePage === "show" && <ShowListing />}
+      {activePage === "update" && <SellerUpdate />}
     </div>
   
     {/* Right Sidebar */}

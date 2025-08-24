@@ -52,7 +52,6 @@ function App() {
      <Header />
        <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/seller" element={<Seller />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/search" element={<Search />} />
               <Route path="/sign-in" element={<Signin />} />
@@ -61,9 +60,9 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route  element={<PrivateRoute />} >
                    <Route path="/profile" element={<Profile />} />
-                   <Route path="/create-listing" element={<CreateListing />} />
                    <Route path="/update-listing/:listingId" element={<UpdateListing />} />
-                  <Route path="/dash" element={<Dashborder />} /> 
+                    <Route path="/seller" element={<Seller />} />
+                    <Route path="/dash" element={<Dashborder />} /> 
                   
               </Route>
               {/* <Route

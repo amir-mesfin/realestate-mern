@@ -37,6 +37,18 @@ export default function Messages() {
       setError(err);
     }
   }
+  if (messages.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[50vh] text-center">
+       <h2 className="text-2xl font-bold text-blue-900 mb-11 text-center">
+        Contact Messages
+      </h2>
+        <p className="text-gray-600 text-base sm:text-lg">
+           no message yet
+        </p>
+      </div>
+    );
+  }
   return (
     <div className="">
       <h2 className="text-2xl font-bold text-blue-900 mb-11 text-center">

@@ -60,15 +60,15 @@ export default function Header() {
           </Link>
           {currentUser?.role === "admin" && (
               <Link to="/dash">
-                <li className="hidden sm:inline font-semibold text-slate-700 hover:underline">
+                <li className="hidden sm:inline font-semibold text-blue-700 hover:underline">
                   Admin Dashboard
                 </li>
               </Link>
             )}
 
           {currentUser?.role === "seller" && (
-            <Link to="/dash">
-              <li className="hidden sm:inline text-slate-700 hover:underline font-semibold ">
+            <Link to="/seller">
+              <li className="hidden sm:inline  text-green-400 hover:underline font-bold text-md ">
                 Seller Dashboard
               </li>
             </Link>
