@@ -72,3 +72,19 @@ export const getMessage = async (req, res, next) => {
     next(err);
   }
 };
+
+export const deleteMessage = async (req, res, next) => {
+  const messageId = req.params.id;
+
+  try {
+    const deletedMessage = await ContactMessage.findByIdAndDelete(messageId);
+
+    if (!deletedMessage) {
+      return next(new ErrorHandler(404, "Message not found"));
+    }
+
+    res.status(200).json({ success: true, message: "Message deleted successfully" });
+  } catch (err) {
+    next(err);
+  }
+};

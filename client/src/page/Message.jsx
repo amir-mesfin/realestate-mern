@@ -64,7 +64,7 @@ export default function Messages() {
                 <span className="font-semibold">Message:</span>  <span className="text-green-600 font-semibold "> {msg.message}</span>
               </p>
               <button className="py-2 rounded-xl w-full    bg-red-300 hover:bg-red-400 text-white font-semibold mx-auto "
-               onClick={() => DeleteMessage(userList._id)}>Delete</button>
+               onClick={() => DeleteMessage(msg._id)}>Delete</button>
               <p className="text-gray-400 italic text-sm">
                 {new Date(msg.createdAt).toLocaleString()}
               </p>
