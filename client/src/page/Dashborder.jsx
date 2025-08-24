@@ -4,6 +4,7 @@ import AddAdmin from "./AddAdmin";
 import AllUser from "./AllUser";
 import RentReal from './RentReal';
 import Dashbord from './Dashbord';
+import Message from './Message'
 import SaleRealState from "./SaleRealState";
 import OfferRealState from './OfferRealState'
 import { useSelector } from "react-redux";
@@ -84,7 +85,7 @@ export default function Dashborder() {
       {activePage === "sale" && <SaleRealState />}
       {activePage === "rent" && <RentReal />}
       {activePage === "offer" && <OfferRealState />}
-      {activePage === "message" && <h1>💬 Messages</h1>}
+      {activePage === "message" && <Message />}
       {activePage === "Dashboard" && <Dashbord />}
       {activePage === "User" && <AllUser />}
     </div>

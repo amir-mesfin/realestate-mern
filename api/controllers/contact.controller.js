@@ -1,5 +1,6 @@
 import { MailerSend } from 'mailersend';
 import ContactMessage from '../models/contact.model.js';
+import { ErrorHandler } from '../utils/error.js';
 export const sendToEmail = async (req, res, next) => {
   const { name, email, phone, message, to, property, address } = req.body;
   
@@ -53,6 +54,20 @@ export const contactInformation = async (req, res, next) => {
     await newInformation.save();
 
     res.status(200).json({ success: true, message: "✅ Message Sent successfully!" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getMessage = async (req, res, next) => {
+  try {
+    const messages = await ContactMessage.find();
+
+    if (!messages || messages.length === 0) {
+      return next(new ErrorHandler(404, "No messages found"));
+    }
+
+    res.status(200).json(messages);
   } catch (err) {
     next(err);
   }

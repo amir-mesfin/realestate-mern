@@ -51,9 +51,9 @@ export default function AllUSer() {
         </div>
       </div>
       <div className='mt-2 sm:mt-0'>
-        {  (userList.role === 'user') &&<button className='bg-red-400 py-1 px-3 sm:py-2 sm:px-5 rounded-xl text-white text-sm sm:text-base'
+        {  (userList.role === 'user') &&<button className='bg-red-300 hover:bg-red-400 py-1 px-3 sm:py-2 sm:px-5 rounded-xl text-white text-sm sm:text-base'
           onClick={() => DeleteUser(userList._id, userList.role)}>Delete</button>}
-           { (userList.role === 'seller' )  &&<button className='bg-red-400 py-1 px-3 sm:py-2 sm:px-5 rounded-xl text-white text-sm sm:text-base'
+           { (userList.role === 'seller' )  &&<button className='hover:bg-red-400 bg-red-300 py-1 px-3 sm:py-2 sm:px-5 rounded-xl text-white text-sm sm:text-base'
           onClick={() => DeleteUser(userList._id, userList.role)}>Delete</button>}
       </div>
     </div>
