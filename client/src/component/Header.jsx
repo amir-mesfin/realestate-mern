@@ -58,26 +58,29 @@ export default function Header() {
           <Link to="about">
           <li className='hidden sm:inline text-slate-700 hover:underline'>About</li>
           </Link>
-          {
-            currentUser.role === 'admin' && <Link to="/dash">
-            <li className='hidden sm:inline text-slate-700 hover:underline'>Admin Dashboard</li>
+          {currentUser?.role === "admin" && (
+              <Link to="/dash">
+                <li className="hidden sm:inline font-semibold text-slate-700 hover:underline">
+                  Admin Dashboard
+                </li>
+              </Link>
+            )}
+
+          {currentUser?.role === "seller" && (
+            <Link to="/dash">
+              <li className="hidden sm:inline text-slate-700 hover:underline font-semibold ">
+                Seller Dashboard
+              </li>
             </Link>
+          )}
 
-          }
-
-         {
-            currentUser.role === 'seller' && <Link to="/dash">
-            <li className='hidden sm:inline text-slate-700 hover:underline'>Seller Dashboard</li>
+          {currentUser?.role === "user" && (
+            <Link to="/contact">
+              <li className="hidden sm:inline text-slate-700 hover:underline">
+                Contact us
+              </li>
             </Link>
-
-          }
-          {
-            
-            currentUser.role === 'user' && <Link to="/contact">
-            <li className='hidden sm:inline text-slate-700 hover:underline'>Admin Dashboard</li>
-            </Link>
-
-          }
+          )}
          
           <Link to="/profile">
           { currentUser? (

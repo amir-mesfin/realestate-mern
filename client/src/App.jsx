@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateSuccess } from "./redux/user/userSlice";
 import { useEffect } from "react";
 import Contact from './page/Contact';
+import Seller from './page/Seller';
 
 
 function App() {
@@ -51,8 +52,8 @@ function App() {
      <Header />
        <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/seller" element={<Seller />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/dash" element={<Dashborder />} /> 
               <Route path="/search" element={<Search />} />
               <Route path="/sign-in" element={<Signin />} />
               <Route path="/listing/:listingId" element={<Listing />} />
@@ -62,7 +63,8 @@ function App() {
                    <Route path="/profile" element={<Profile />} />
                    <Route path="/create-listing" element={<CreateListing />} />
                    <Route path="/update-listing/:listingId" element={<UpdateListing />} />
-              
+                  <Route path="/dash" element={<Dashborder />} /> 
+                  
               </Route>
               {/* <Route
                  path="/profile"
