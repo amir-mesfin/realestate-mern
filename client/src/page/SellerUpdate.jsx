@@ -19,7 +19,7 @@ export default function SellerUpdate() {
           setShowListingError(data.message);
           return;
         }
-        console.log(data);
+        // console.log(data);
         setUserListing(data);
           
       }catch(error){

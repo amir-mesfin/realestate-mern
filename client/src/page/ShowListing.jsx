@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
+import { Link } from "react-router-dom";
+
+
 
 export default function ShowListing() {
   const [userListing, setUserListing] = useState([]);
@@ -17,7 +20,7 @@ export default function ShowListing() {
           setShowListingError(data.message);
           return;
         }
-        console.log(data);
+        // console.log(data);
         setUserListing(data);
           
       }catch(error){
@@ -36,7 +39,7 @@ export default function ShowListing() {
         <p className="text-gray-600 text-base sm:text-lg">
           No Real_state has listed You.
         </p>
-        {ShowListingError && <p className="text-red-500 mt-2">{error}</p>}
+        {ShowListingError && <p className="text-red-500 mt-2">{ShowListingError}</p>}
       </div>
     );
   }

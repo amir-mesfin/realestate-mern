@@ -67,8 +67,8 @@ export default function Search() {
   fetchListingData();
 
 } , [location.search])
-console.log(listing);
-console.log(error);
+// console.log(listing);
+// console.log(error);
 
   // console.log(sideBarData);
   const handleChange = (e) =>{

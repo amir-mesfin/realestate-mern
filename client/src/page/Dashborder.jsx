@@ -46,7 +46,7 @@ export default function Dashborder() {
           }
           GetAllUser();
       },[]);
-      console.log(agent);
+      // console.log(agent);
 
   const menuItems = [
     { label: "Dashboard", key: "Dashboard" },

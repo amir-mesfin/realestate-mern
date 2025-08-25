@@ -38,7 +38,7 @@ export default function AddAdmin() {
       setLoading(false);
     }
   };
-  console.log(email);
+  // console.log(email);
 
   return (
     <div className="max-w-md mx-auto p-6">

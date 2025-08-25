@@ -102,7 +102,7 @@ export default function Profile() {
         ...formData,
         ...(profileImage && { avatar: profileImage })
       };
-      console.log("abushe");
+      // console.log("abushe");
       
       // console.log("Submitting:", updateData);
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
