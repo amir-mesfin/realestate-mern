@@ -1,5 +1,5 @@
 import express from 'express'
-import {testing,
+import {
         updateProfile,
         deleteUSer,
         getUserListing,
@@ -11,7 +11,7 @@ import {testing,
 import { verifyToken } from '../utils/verrifyUser.js';
 const router = express.Router();
 
-router.get("/test", testing);
+// router.get("/test", testing);
 router.get('/requestSeller', getRequest);
 router.post('/make-admin', verifyToken , makeAdmin)
 router.post('/request-seller/:id', verifyToken, requestSeller);

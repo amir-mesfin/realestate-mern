@@ -1,5 +1,5 @@
 import User from '../models/user.model.js'
-import bcryptjs, { hashSync } from 'bcryptjs';
+import bcryptjs from 'bcryptjs';
 import { ErrorHandler } from '../utils/error.js';
 import jwt from 'jsonwebtoken';
 

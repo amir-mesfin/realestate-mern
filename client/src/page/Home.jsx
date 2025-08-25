@@ -87,10 +87,12 @@ export default function Home() {
                  <br/>
                  We have a wide range of properties for you to  choose from.
              </div>
-             <Link to={'search'}
-                  className=' text-blue-800 hover:underline   font-bold'>
-                    Let's get start now ...
-             </Link>
+             <Link 
+  to="/search"
+  className="text-blue-800 hover:underline font-bold text-lg transition duration-200 ease-in-out"
+>
+  Let's get started now...
+</Link>
         </div>
 
        {/* awiper */}

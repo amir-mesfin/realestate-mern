@@ -6,6 +6,7 @@ import authRouter from './routes/auth.route.js'
 import listingRouter from './routes/listing.route.js'
 import adminRouter from './routes/admin.route.js'
 import cookieParser from 'cookie-parser';
+import path from 'path'
 const app = express();
 const PORT = process.env.PORT || 3000
 
@@ -23,6 +24,7 @@ connectDB()
     console.error("Failed to connect to DB:", err);
   });
 
+const __dirname = path.resolve();
 
 app.use(cookieParser());
 app.use(express.json());
@@ -34,6 +36,12 @@ app.use("/api/listing",listingRouter);
 app.use('/api/contact', contactRouter);
 app.use('/api/adminWork',adminRouter );
 
+
+app.use(express.static(path.join(__dirname, "/client/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
 
 app.use((err,req, res, next)=>{
   const statusCode = err.statusCode || 500;
